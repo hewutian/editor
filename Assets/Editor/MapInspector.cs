@@ -112,6 +112,7 @@ public class MapInspector : Editor {
         if (current == null)
             return;
         var collisionPos = CaculateCollisionPos();
+        collisionPos = new Vector3(collisionPos.x, 0, collisionPos.z);
         e_ItemType itemtype = e_ItemType.Box ;
         var pos = CaculateBuildPos(collisionPos, itemtype);
         DrawHandlesCube(pos,Color.green);
@@ -143,14 +144,27 @@ public class MapInspector : Editor {
     Vector3 CaculateCollisionPos()
     {
         var mousepos = Event.current.mousePosition;
-        Ray screenTo = SceneView.lastActiveSceneView.camera.ScreenPointToRay(mousepos);
+        Ray screenTo = HandleUtility.GUIPointToWorldRay(mousepos);// SceneView.lastActiveSceneView.camera.ScreenPointToRay(mousepos);
+        //Debug.Log(mousepos + "mouse");
+        //Debug.Log(screenTo.origin + "origin");
+       // Debug.Log(screenTo.direction + "direction");
         Vector3 pos = new Vector3();
         RaycastHit hitinfo;
         if( Physics.Raycast(screenTo, out hitinfo))
         {
             pos = hitinfo.point;
-            pos.z = pos.z * (-1);
         }
+        //if (Event.current.type == EventType.mouseDown)
+        //{
+        //    //Debug.Log(Input.mousePosition);
+        //    //var p = SceneView.lastActiveSceneView.camera.ScreenToWorldPoint(new Vector3(mousepos.x, mousepos.y, SceneView.lastActiveSceneView.camera.nearClipPlane));
+        //    // Gizmos.color = Color.yellow;
+        //    //  Gizmos.DrawSphere(p, 0.1f);
+        //    Debug.Log("----------------");
+        //    Debug.Log(mousepos);
+        //   // Debug.DrawLine(SceneView.lastActiveSceneView.camera.transform.position, pos);
+        //    Debug.DrawLine(screenTo.origin, pos);
+        //}
         return pos;
     }
 
@@ -328,7 +342,8 @@ public class MapInspector : Editor {
 
         }
         //if (objTarget)
-        objTarget.transform.position = centerpos;
+        //objTarget.transform.position = centerpos;
+        objTarget.transform.position = new Vector3(centerpos.x,iteminfo.posy,centerpos.z);
         cm.unreachable.Add(index);
 
         //return centerpos;
@@ -338,6 +353,7 @@ public class MapInspector : Editor {
     {
         foreach(var e in cm.itemlist)
         {
+            if (e != null)
             CreateGameObjectAndAddUnreachable(e);
         }
     }
@@ -347,11 +363,13 @@ public class MapInspector : Editor {
         SceneView view = SceneView.lastActiveSceneView;
         if (view)
         {
-            view.camera.orthographic = true;
+            view.camera.orthographic = false;
             view.rotation = Quaternion.Euler(90f, 0f, 0f);
+            Vector3 newpos = o.transform.position;
+            // newpos.z = -10;
             view.pivot = o.transform.position;
-            view.size = 60f;
-            view.orthographic = true;
+            view.size = 30f;
+            view.orthographic = false;
         }
     }
     public  List<int> Detect(List<Vector3> pos, Vector3 dir, float max)
@@ -389,9 +407,20 @@ public class MapInspector : Editor {
         return flag;
     }
 
+    void UpdateItemInfo()
+    {
+        foreach(var i in cm.itemlist)
+        {
+            if (i != null)
+            i.posy = i.prefab.transform.position.y;
+        }
+    }
+
+
     public void Save()
     {
         // SceneView.onSceneGUIDelegate -= OnSceneGUI;
+        UpdateItemInfo();
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
