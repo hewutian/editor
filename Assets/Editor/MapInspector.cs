@@ -13,10 +13,30 @@ public class MapInspector : Editor {
     public static e_ItemType chooseType;
     void DrawHandlesCube(Vector3 center,Color cl)
     {
-        Vector3 p1 = center + Vector3.up * 0.5f + Vector3.right * 0.5f + Vector3.forward * 0.5f;
-        Vector3 p2 = center + Vector3.up * 0.5f + Vector3.right * 0.5f - Vector3.forward * 0.5f;
-        Vector3 p3 = center + Vector3.up * 0.5f - Vector3.right * 0.5f - Vector3.forward * 0.5f;
-        Vector3 p4 = center + Vector3.up * 0.5f - Vector3.right * 0.5f + Vector3.forward * 0.5f;
+        int xlength = 1;
+        int ylength = 1;
+        int zlength = 1;
+        if (SelectedTool != null)
+        {
+            var obj = ResourceCenter.Instance.prefabObjects[SelectedTool];
+            //var size = obj.GetComponent<Collider>().bounds.size;
+            var size = obj.GetComponent<Renderer>().bounds.size;
+            xlength = (int)Mathf.Ceil(size.x / cm.unitlength);
+            zlength = (int)Mathf.Ceil(size.z / cm.unitlength);
+            ylength = (int)Mathf.Ceil(size.y / cm.unitlength);
+        }
+        Vector3 p2 = center + Vector3.up * 0f + Vector3.right * (xlength - 0.5f) + Vector3.forward * 0.5f * 1;
+        Vector3 p3 = center + Vector3.up * 0f + Vector3.right * (xlength - 0.5f) - Vector3.forward * (zlength - 0.5f);
+        Vector3 p4 = center + Vector3.up * 0f - Vector3.right * 0.5f * 1 - Vector3.forward * (zlength - 0.5f);
+
+        Vector3 p1 = center + Vector3.up * 0f - Vector3.right * 0.5f * 1 + Vector3.forward * 0.5f * 1;
+
+        //Vector3 p1 = center + Vector3.up * 0.5f + Vector3.right * 0.5f + Vector3.forward * 0.5f;
+        //Vector3 p2 = center + Vector3.up * 0.5f + Vector3.right * 0.5f - Vector3.forward * 0.5f;
+        //Vector3 p3 = center + Vector3.up * 0.5f - Vector3.right * 0.5f - Vector3.forward * 0.5f;
+        //Vector3 p4 = center + Vector3.up * 0.5f - Vector3.right * 0.5f + Vector3.forward * 0.5f;
+
+
 
         //Vector3 p5 = center - Vector3.up * 0.5f + Vector3.right * 0.5f + Vector3.forward * 0.5f;
         //Vector3 p6 = center - Vector3.up * 0.5f + Vector3.right * 0.5f - Vector3.forward * 0.5f;
@@ -55,6 +75,7 @@ public class MapInspector : Editor {
             else
             selected = value;
             chooseType = (e_ItemType)value;
+            //ResourceCenter.Instance.prefabObjects[]
             switch (value)
             {
                 case 0:
@@ -161,8 +182,8 @@ public class MapInspector : Editor {
         //    // Gizmos.color = Color.yellow;
         //    //  Gizmos.DrawSphere(p, 0.1f);
         //    Debug.Log("----------------");
-        //    Debug.Log(mousepos);
-        //   // Debug.DrawLine(SceneView.lastActiveSceneView.camera.transform.position, pos);
+        //    Debug.Log(pos);
+        //    // Debug.DrawLine(SceneView.lastActiveSceneView.camera.transform.position, pos);
         //    Debug.DrawLine(screenTo.origin, pos);
         //}
         return pos;
@@ -205,6 +226,7 @@ public class MapInspector : Editor {
         int row = (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var indexUnitpos = new Vector3(rank*cm.unitlength + lefttop.x - cm.unitlength/2.0f, pos.y,lefttop.z - row*cm.unitlength + cm.unitlength/2.0f);
+        Debug.Log(indexUnitpos + "index");
         return indexUnitpos;
     }
 
