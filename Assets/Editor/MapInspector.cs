@@ -11,55 +11,7 @@ public class MapInspector : Editor {
     public CustomMap cm;
     static int selected = 0;
     public static e_ItemType chooseType;
-    void DrawHandlesCube(Vector3 center,Color cl)
-    {
-        int xlength = 1;
-        int ylength = 1;
-        int zlength = 1;
-        if (SelectedTool != null)
-        {
-            var obj = ResourceCenter.Instance.prefabObjects[SelectedTool];
-            //var size = obj.GetComponent<Collider>().bounds.size;
-            var size = obj.GetComponent<Renderer>().bounds.size;
-            xlength = (int)Mathf.Ceil(size.x / cm.unitlength);
-            zlength = (int)Mathf.Ceil(size.z / cm.unitlength);
-            ylength = (int)Mathf.Ceil(size.y / cm.unitlength);
-        }
-        Vector3 p2 = center + Vector3.up * 0f + Vector3.right * (xlength - 0.5f) + Vector3.forward * 0.5f * 1;
-        Vector3 p3 = center + Vector3.up * 0f + Vector3.right * (xlength - 0.5f) - Vector3.forward * (zlength - 0.5f);
-        Vector3 p4 = center + Vector3.up * 0f - Vector3.right * 0.5f * 1 - Vector3.forward * (zlength - 0.5f);
 
-        Vector3 p1 = center + Vector3.up * 0f - Vector3.right * 0.5f * 1 + Vector3.forward * 0.5f * 1;
-
-        //Vector3 p1 = center + Vector3.up * 0.5f + Vector3.right * 0.5f + Vector3.forward * 0.5f;
-        //Vector3 p2 = center + Vector3.up * 0.5f + Vector3.right * 0.5f - Vector3.forward * 0.5f;
-        //Vector3 p3 = center + Vector3.up * 0.5f - Vector3.right * 0.5f - Vector3.forward * 0.5f;
-        //Vector3 p4 = center + Vector3.up * 0.5f - Vector3.right * 0.5f + Vector3.forward * 0.5f;
-
-
-
-        //Vector3 p5 = center - Vector3.up * 0.5f + Vector3.right * 0.5f + Vector3.forward * 0.5f;
-        //Vector3 p6 = center - Vector3.up * 0.5f + Vector3.right * 0.5f - Vector3.forward * 0.5f;
-        //Vector3 p7 = center - Vector3.up * 0.5f - Vector3.right * 0.5f - Vector3.forward * 0.5f;
-        //Vector3 p8 = center - Vector3.up * 0.5f - Vector3.right * 0.5f + Vector3.forward * 0.5f;
-        Handles.color = cl;
-        Handles.DrawLine(p1, p2);
-        Handles.DrawLine(p2, p3);
-        Handles.DrawLine(p3, p4);
-        Handles.DrawLine(p4, p1);
-        //Handles.DrawLine(p5, p6);
-        //Handles.DrawLine(p6, p7);
-        //Handles.DrawLine(p7, p8);
-        //Handles.DrawLine(p8, p5);
-        //Handles.DrawLine(p1, p5);
-        //Handles.DrawLine(p2, p6);
-        //Handles.DrawLine(p3, p7);
-        //Handles.DrawLine(p4, p8);
-    }
-
-    void DrawFrameByItemType(e_ItemType it,Vector3 center)
-    {
-    }
     public static int SelectedTool
     {
         get
@@ -126,7 +78,7 @@ public class MapInspector : Editor {
         GUILayout.EndArea();
         Handles.EndGUI();
     }
-        void OnSceneGUI(SceneView sv)
+     void OnSceneGUI(SceneView sv)
     {
         TestTool(sv);
         Event current = Event.current;
@@ -136,18 +88,25 @@ public class MapInspector : Editor {
         collisionPos = new Vector3(collisionPos.x, 0, collisionPos.z);
         e_ItemType itemtype = e_ItemType.Box ;
         var pos = CaculateBuildPos(collisionPos, itemtype);
-        DrawHandlesCube(pos,Color.green);
-        // int controlID = GUIUtility.GetControlID(FocusType.Passive);
+        var size = Helper.CaculateGameObjectSize(cm,SelectedTool);
+        var index = CaculateIndexForPos(pos);
+        var center = Helper.CaculateCreateGameObjectCenter(pos,size,cm);
+        var flag = Helper.CheckContainUnreachable(index,size,cm);
+        if (flag == true)
+            Helper.DrawLines(pos, size, cm,Color.red);
+        else
+            Helper.DrawLines(pos, size, cm,Color.green);
+         // int controlID = GUIUtility.GetControlID(FocusType.Passive);
         switch (current.type)
         {
             case EventType.mouseDown:
-                //
-                if (current.button ==0)
+                if (current.button ==0 && (!flag))
                 {
-                    AddObject();
+                    AddObject(index,center);
+                    AddNewItem(index, size, itemtype);
                     current.Use();
                 }
-                else
+                else if(current.button == 1)
                 {
                    // Debug.Log(current.keyCode);
                 }
@@ -155,7 +114,6 @@ public class MapInspector : Editor {
             default:
                 break;
         }
-        //current.Use();
         SceneView.RepaintAll();
     }
     void Update()
@@ -166,9 +124,6 @@ public class MapInspector : Editor {
     {
         var mousepos = Event.current.mousePosition;
         Ray screenTo = HandleUtility.GUIPointToWorldRay(mousepos);// SceneView.lastActiveSceneView.camera.ScreenPointToRay(mousepos);
-        //Debug.Log(mousepos + "mouse");
-        //Debug.Log(screenTo.origin + "origin");
-       // Debug.Log(screenTo.direction + "direction");
         Vector3 pos = new Vector3();
         RaycastHit hitinfo;
         if( Physics.Raycast(screenTo, out hitinfo))
@@ -201,7 +156,6 @@ public class MapInspector : Editor {
 
     bool CheckIfBuildItem( Vector3 pos,e_ItemType type)
     {
-
         Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
         int rank = (int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
         int row = (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
@@ -230,44 +184,70 @@ public class MapInspector : Editor {
         return indexUnitpos;
     }
 
-    void BuildOrNot(e_ItemType itemtype)
+    void CreateGameObject(Vector3 center,e_ItemType itemtype)
     {
-        var collisionPos = CaculateCollisionPos();
-        if (collisionPos == Vector3.zero)
-            return;
-        if (CheckIfBuildItem(collisionPos, itemtype))
-        {
-            GameObject objTarget;
-            switch (itemtype)
-            {
-                case e_ItemType.Tree:
-                     objTarget = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-
-                    break;
-                case e_ItemType.Box:
-                     objTarget = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    break;
-                case e_ItemType.Stone:
-                     objTarget = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    break;
-                default:
-                    return;
-                    break;
-
-            }
-            //if (objTarget)
-           objTarget.transform.position = CaculateBuildPos(collisionPos, itemtype);
-           int index = CaculateIndexForPos(collisionPos);
-            cm.unreachable.Add(index);
-            CustomItemInfo newitem = new CustomItemInfo();
-            newitem.type = itemtype;
-            newitem.lefttopsite = index;
-            newitem.prefab = objTarget;
-            cm.itemlist.Add(newitem);
-        }
+        GameObject objTarget;
+        objTarget = GameObject.Instantiate(ResourceCenter.Instance.prefabObjects[SelectedTool]);
+        if (objTarget)
+        objTarget.transform.position = center;
     }
 
-    void AddObject()
+    void AddNewItem(int posindex,Vector3 size,e_ItemType itemtype)
+    {
+        // int index = CaculateIndexForPos(collisionPos);
+        int xlength = (int)size.x;
+        int zlength = (int)size.z;
+        int num =(int) size.x * (int)size.z;
+        for (int i = 0; i < num; ++i)
+        {
+            int index = posindex + (i / xlength) * cm.mapwidth / cm.unitlength + i % xlength;
+            cm.unreachable.Add(index);
+        }
+        CustomItemInfo newitem = new CustomItemInfo();
+        newitem.type = itemtype;
+        newitem.lefttopsite = posindex;
+        newitem.prefab = ResourceCenter.Instance.prefabObjects[SelectedTool];
+        cm.itemlist.Add(newitem);
+    }
+
+    //void BuildOrNot(e_ItemType itemtype)
+    //{
+    //    var collisionPos = CaculateCollisionPos();
+    //    if (collisionPos == Vector3.zero)
+    //        return;
+    //    if (CheckIfBuildItem(collisionPos, itemtype))
+    //    {
+    //        GameObject objTarget;
+    //        switch (itemtype)
+    //        {
+    //            case e_ItemType.Tree:
+    //                objTarget = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+
+    //                break;
+    //            case e_ItemType.Box:
+    //                objTarget = GameObject.CreatePrimitive(PrimitiveType.Cube);
+    //                break;
+    //            case e_ItemType.Stone:
+    //                objTarget = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+    //                break;
+    //            default:
+    //                return;
+    //                break;
+
+    //        }
+    //        //if (objTarget)
+    //        objTarget.transform.position = CaculateBuildPos(collisionPos, itemtype);
+    //        int index = CaculateIndexForPos(collisionPos);
+    //        cm.unreachable.Add(index);
+    //        CustomItemInfo newitem = new CustomItemInfo();
+    //        newitem.type = itemtype;
+    //        newitem.lefttopsite = index;
+    //        newitem.prefab = objTarget;
+    //        cm.itemlist.Add(newitem);
+    //    }
+    //}
+
+    void AddObject(int posindex,Vector3 center)
     {
         e_ItemType itemtype = MapInspector.chooseType;// MapDesignerWindow.mapdesignerWind.chooseType;
         //GameObject  objTarget;
@@ -276,7 +256,9 @@ public class MapInspector : Editor {
             case e_ItemType.Tree:
             case e_ItemType.Box:
             case e_ItemType.Stone:
-                BuildOrNot(itemtype);
+                //BuildOrNot(itemtype);
+                CreateGameObject(center,itemtype);
+
                 break;
             default:
                // AttempToSelect();
@@ -331,7 +313,7 @@ public class MapInspector : Editor {
                 positions.Add(pos);
             }
        // AssetDatabase.Refresh();
-        cm.unreachable =Detect(positions, cm.dir, cm.max);
+        cm.unreachable =Helper.Detect(positions, cm.dir, cm.max);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
@@ -367,7 +349,6 @@ public class MapInspector : Editor {
         //objTarget.transform.position = centerpos;
         objTarget.transform.position = new Vector3(centerpos.x,iteminfo.posy,centerpos.z);
         cm.unreachable.Add(index);
-
         //return centerpos;
     }
 
@@ -394,41 +375,7 @@ public class MapInspector : Editor {
             view.orthographic = false;
         }
     }
-    public  List<int> Detect(List<Vector3> pos, Vector3 dir, float max)
-    {
-        int i = 0;
-        List<int> unreachable = new List<int>();
-        foreach (var p in pos)
-        {
-            bool res = CastLine(p, dir, max);
-            if (res == false)
-            {
-                unreachable.Add(i); //保存的这个i是地图的小格子 从0开始计数
-            }
-            i++;
-        }
-        return unreachable;
-    }
-
-    public  bool CastLine(Vector3 pos, Vector3 dir, float max)
-    {
-        RaycastHit hit;
-        bool flag = false;
-       // Debug.DrawLine(pos, dir);
-        if (Physics.Raycast(pos, dir, out hit))
-        {
-            float depth = hit.point.y;
-         //   Debug.Log(pos);
-         //   Debug.Log(depth);
-            //float depth = hit.collider.gameObject.transform.position.y;
-            if (depth <= max)
-            {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-
+    
     void UpdateItemInfo()
     {
         foreach(var i in cm.itemlist)
@@ -437,8 +384,7 @@ public class MapInspector : Editor {
             i.posy = i.prefab.transform.position.y;
         }
     }
-
-
+    
     public void Save()
     {
         // SceneView.onSceneGUIDelegate -= OnSceneGUI;

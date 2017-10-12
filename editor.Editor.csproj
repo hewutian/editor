@@ -124,6 +124,8 @@
     <Compile Include="Assets\Editor\CustomMap.cs" />
     <Compile Include="Assets\Editor\CustomMapAssetCreator.cs" />
     <Compile Include="Assets\Editor\CustomMapDef.cs" />
+    <Compile Include="Assets\Editor\Detector.cs" />
+    <Compile Include="Assets\Editor\Helper.cs" />
     <Compile Include="Assets\Editor\MapDesignerWindow.cs" />
     <Compile Include="Assets\Editor\MapInspector.cs" />
     <Compile Include="Assets\Editor\ResourceCenter.cs" />
