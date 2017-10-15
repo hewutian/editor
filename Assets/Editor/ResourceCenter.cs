@@ -8,6 +8,8 @@ public class ResourceCenter
 
     public GameObject[] prefabObjects;// = new GameObject[0];
     public Texture2D[] thumbnails;//= new Texture2D[0];
+    public Dictionary<string, GameObject> objectDic;
+
     private static ResourceCenter instance;
     public static ResourceCenter Instance
     {
@@ -48,21 +50,23 @@ public class ResourceCenter
         LoadAllPrefabsInDirectory(prefabpath);
         GenerateAllThumbnails();
     }
-
-
-
+    
     public void LoadAllPrefabsInDirectory(string path)
     {
         DirectoryInfo dirs = new DirectoryInfo(path);
         FileInfo[] files = dirs.GetFiles("*.prefab");
         List<GameObject> gameobjects = new List<GameObject>();
+        objectDic = new Dictionary<string, GameObject>();
         foreach(FileInfo fi in files)
         {
             string fullpath = fi.FullName.Replace(@"\", "/");
             fullpath = "Assets" + fullpath.Replace(Application.dataPath, "");
             GameObject pre = AssetDatabase.LoadAssetAtPath(fullpath,typeof(GameObject)) as GameObject;
             if (pre != null)
+            {
                 gameobjects.Add(pre);
+                objectDic.Add(pre.name, pre);
+            }
         }
         prefabObjects = new GameObject[gameobjects.Count];
         prefabObjects = gameobjects.ToArray();

@@ -17,7 +17,6 @@ public class MapModifier
             return instance;
         }
     }
-
     public CustomMap CurMap
     {
         get
@@ -25,22 +24,17 @@ public class MapModifier
             return cm;
         }
     }
-
     public Vector3 MapSize
     {
         get
         {
             return mapsize;
         }
-    }
-   
-
-public void SetCustomMap(CustomMap cmap)
+    }  
+    public void SetCustomMap(CustomMap cmap)
     {
         cm = cmap;
     }
-
-
 
     public void AddUnreachableIndex(int index)
     {
@@ -52,7 +46,6 @@ public void SetCustomMap(CustomMap cmap)
 
     }
 
-
     public void RemoveUnreachableIndex(int index)
     {
 
@@ -63,7 +56,7 @@ public void SetCustomMap(CustomMap cmap)
 
     public void RemoveItemInfo()
     { }
-
+    //从gui上一点发射线求与世界物体碰撞的位置
    public Vector3 CaculateCollisionPosFromGUIPoint(Vector2 guipoint)
     {
         var mousepos = Event.current.mousePosition;
@@ -76,7 +69,7 @@ public void SetCustomMap(CustomMap cmap)
         }
         return pos;
     }
-
+    //计算选择的模型的轮廓大小，主要看x,z
     public Vector3 CaculateGameObjectSize(int selected)
     {
         int xlength = 1;
@@ -93,7 +86,7 @@ public void SetCustomMap(CustomMap cmap)
         }
         return new Vector3(xlength, ylength, zlength);
     }
-
+    //根据左上的中心坐标和物体轮廓来求轮廓的中心，
     public Vector3 CaculateCreateGameObjectCenter(Vector3 pos, Vector3 size)
     {
         int xlength = (int)size.x;
@@ -104,7 +97,7 @@ public void SetCustomMap(CustomMap cmap)
         center.z = pos.z - (float)(zlength / 2f - 0.5) * cm.unitlength;
         return center;
     }
-
+    //根据位置来求对应的在地图中的小格子的中心坐标
     public Vector3 CaculateCellCenterByPos(Vector3 pos)
     {
         Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
@@ -115,7 +108,7 @@ public void SetCustomMap(CustomMap cmap)
         Debug.Log(indexUnitpos + "index");
         return indexUnitpos;
     }
-
+    //根据位置来求对应的在地图中的小格子索引
     public int CaculateIndexForPos(Vector3 pos)
     {
         Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
@@ -124,7 +117,7 @@ public void SetCustomMap(CustomMap cmap)
         int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank - 1);
         return index;
     }
-
+    //根据左上索引和轮廓来看是否包含了不可达的位置
     public bool CheckContainUnreachable(int siteindex, Vector3 size)
     {
         int xlength = (int)size.x / cm.unitlength;
@@ -141,8 +134,7 @@ public void SetCustomMap(CustomMap cmap)
         }
         return false;
     }
-
-
+    
     void CreateGameObject(Vector3 center, int index)
     {
         GameObject objTarget;
@@ -150,7 +142,7 @@ public void SetCustomMap(CustomMap cmap)
         if (objTarget)
             objTarget.transform.position = center;
     }
-
+    
     public void AddNewItem(int posindex, Vector3 size, int itemindex)
     {
         // int index = CaculateIndexForPos(collisionPos);
@@ -171,21 +163,7 @@ public void SetCustomMap(CustomMap cmap)
 
     public void AddObject(int posindex, Vector3 center,int itemindex)
     {
-        e_ItemType itemtype = MapInspector.chooseType;// MapDesignerWindow.mapdesignerWind.chooseType;
-        //GameObject  objTarget;
-        switch (itemtype)
-        {
-            case e_ItemType.Tree:
-            case e_ItemType.Box:
-            case e_ItemType.Stone:
-                //BuildOrNot(itemtype);
-                CreateGameObject(center, itemindex);
-
-                break;
-            default:
-                // AttempToSelect();
-                break;
-        }
+        CreateGameObject(center, itemindex);
         Debug.Log("mouse click");
     }
 
@@ -203,7 +181,7 @@ public void SetCustomMap(CustomMap cmap)
             cm.hasGeneratedData = true;
         }
     }
-
+    //检测不可达点
     List<int> Detect(List<Vector3> pos, Vector3 dir, float max)
     {
         int i = 0;
@@ -234,7 +212,7 @@ public void SetCustomMap(CustomMap cmap)
         }
         return flag;
     }
-
+    //仅仅根据模板地图生成不可达点
     void GenerateBaseUnreachableData()
     {
         List<Vector3> positions = new List<Vector3>();
@@ -249,10 +227,7 @@ public void SetCustomMap(CustomMap cmap)
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
-
-
-    
-
+    //把地图的小格索引转成对应的格子中心位置
     public Vector3 TranselateIndexToPostion(int index)
     {
         int xlength = (int)cm.mapwidth / cm.unitlength;
@@ -263,7 +238,7 @@ public void SetCustomMap(CustomMap cmap)
         
         return pos;
     }
-
+    //主要是更新物体的y值
       void UpdateItemInfo()
     {
         foreach (var i in cm.itemlist)
@@ -280,7 +255,7 @@ public void SetCustomMap(CustomMap cmap)
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
-
+    // 根据信息来创建物体，并且计算该物体新产生的不可达点，并添加进去
    public  void CreateGameObjectAndAddUnreachable(CustomItemInfo iteminfo)
     {
         int index = iteminfo.lefttopsite;
@@ -289,25 +264,8 @@ public void SetCustomMap(CustomMap cmap)
         int row = index / (cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var centerpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
-
         GameObject objTarget;
-        switch (iteminfo.type)
-        {
-            case e_ItemType.Tree:
-                objTarget = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-
-                break;
-            case e_ItemType.Box:
-                objTarget = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                break;
-            case e_ItemType.Stone:
-                objTarget = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                break;
-            default:
-                return;
-                break;
-
-        }
+        objTarget = ResourceCenter.Instance.objectDic[iteminfo.name];
         //if (objTarget)
         //objTarget.transform.position = centerpos;
         objTarget.transform.position = new Vector3(centerpos.x, iteminfo.posy, centerpos.z);

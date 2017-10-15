@@ -14,7 +14,7 @@ public class MapSceneView
             return instance;
         }
     }
-
+    //选择的模型预览的索引数
     static int selected = 0;
     public static int SelectedTool
     {
@@ -33,7 +33,7 @@ public class MapSceneView
             //ResourceCenter.Instance.prefabObjects[]
         }
     }
-
+    //设置观察的摄像机位姿
     public void CameraTop(GameObject o)
     {
         SceneView view = SceneView.lastActiveSceneView;
@@ -48,17 +48,12 @@ public class MapSceneView
             view.orthographic = false;
         }
     }
-
-
+    //第一阶段的gui显示
     void FirstStageGuiTool(SceneView sv)
     {
 
     }
-
-
-
-
-
+    //第二阶段的 gui显示
     void SecondStageGuiTool(SceneView sv)
     {
         Handles.BeginGUI();
@@ -84,7 +79,7 @@ public class MapSceneView
         GUILayout.EndArea();
         Handles.EndGUI();
     }
-
+    //设置地图编辑的阶段
     public void SetMapDesignStage(int num)
     {
         switch (num)
@@ -103,8 +98,7 @@ public class MapSceneView
                 break;
         }
     }
-
-
+    //第一阶段中对于事件的处理和辅助显示
     void SceneGuiDelegateFirst(SceneView sv)
     {
         FirstStageGuiTool(sv);
@@ -118,7 +112,7 @@ public class MapSceneView
         }
         DealWithGUIEventFirstStage();
     }
-
+    //处理gui事件
     void DealWithGUIEventFirstStage()
     {
         Event current = Event.current;
@@ -130,13 +124,13 @@ public class MapSceneView
       //  Vector3 objectsize = 
     }
 
-
+    //第二阶段中对于事件的处理和辅助显示
     void SceneGuiDelegateSecond(SceneView sv)
     {
         SecondStageGuiTool(sv);
         DealWithGUIEventSecondStage();
     }
-
+    //处理gui事件
     void DealWithGUIEventSecondStage()
     {
         Event current = Event.current;

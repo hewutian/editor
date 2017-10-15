@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 public class MapAux
 {
-
+    //绘制地图的所有小格
     public static void DrawMapCells(Vector3 center,Vector3 size ,float unitlength,Color cl)
     {
         int xnum = (int)size.x;
@@ -25,7 +25,7 @@ public class MapAux
             Handles.DrawLine(curpoint, curpoint + new Vector3(xnum*unitlength, 0, 0));
         }
     }
-
+    //绘制不可达的格子 
     public static void DrawMapUnreachableArea(Vector3 center,float unitlength,Color cl)
     {
         Vector3 p2 = center + Vector3.up * 0f + Vector3.right * 0.5f * unitlength + Vector3.forward * 0.5f * unitlength;
@@ -49,7 +49,7 @@ public class MapAux
     {
 
     }
-
+    //根据左上格子的中心位置来绘制一定规格的矩形
     public static void DrawLines(Vector3 pos, Vector3 size, Color cl)
     {
         int xlength = (int)size.x;
