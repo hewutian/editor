@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEditor;
 public class MapSceneView
 {
-    static MapSceneView instace;
+    static MapSceneView instance;
     public static MapSceneView Instance
     {
         get
         {
-            if (instace == null)
-                instace = new MapSceneView();
-            return Instance;
+            if (instance == null)
+                instance = new MapSceneView();
+            return instance;
         }
     }
 
@@ -98,6 +98,8 @@ public class MapSceneView
                 SceneView.onSceneGUIDelegate += SceneGuiDelegateSecond;
                 break;
             default:
+                SceneView.onSceneGUIDelegate -= SceneGuiDelegateFirst;
+                SceneView.onSceneGUIDelegate -= SceneGuiDelegateSecond;
                 break;
         }
     }

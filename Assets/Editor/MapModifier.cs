@@ -6,7 +6,7 @@ public class MapModifier
 {
     CustomMap cm;
     Vector3 mapsize;
-    Vector3 lefttop;
+    Vector3 maplefttopcenter;
      static MapModifier instance;
     public static MapModifier Instance
     {
@@ -196,10 +196,11 @@ public void SetCustomMap(CustomMap cmap)
         mapsize.x = cm.mapwidth / cm.unitlength;
         mapsize.y = 0;
         mapsize.z = cm.mapheight / cm.unitlength;
-        Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
+        maplefttopcenter = new Vector3(cm.center.x - cm.mapwidth / 2.0f + cm.unitlength/2f, 0, cm.center.z + cm.mapheight / 2.0f - cm.unitlength/2f);
         if(cm.hasGeneratedData == false)
         {
             GenerateBaseUnreachableData();
+            cm.hasGeneratedData = true;
         }
     }
 
@@ -258,7 +259,7 @@ public void SetCustomMap(CustomMap cmap)
         //int zlength = (int)cm.mapheight / cm.unitlength;
         int xdelta = index % xlength;
         int zdelta = index / xlength;
-        Vector3 pos = new Vector3(lefttop.x + xdelta * cm.unitlength, 0, lefttop.z - zdelta * cm.unitlength);
+        Vector3 pos = new Vector3(maplefttopcenter.x + xdelta * cm.unitlength, 0, maplefttopcenter.z - zdelta * cm.unitlength);
         
         return pos;
     }
