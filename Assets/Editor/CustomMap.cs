@@ -11,8 +11,8 @@ public class CustomMap : ScriptableObject {
     public Vector3 dir;
     public float max = 5;
     public GameObject scene;
-
-
+    public string prefabName;
+    public bool hasGeneratedData = false;
     public Vector3 center;
 
     //public CustomItemInfo[] itemList = new CustomItemInfo[0];
