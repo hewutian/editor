@@ -116,6 +116,8 @@ public class MapSceneView
     void DealWithGUIEventFirstStage()
     {
         Event current = Event.current;
+        int controlID = GUIUtility.GetControlID(FocusType.Passive);
+        HandleUtility.AddDefaultControl(controlID);
         //if (current == null)
         //    return;
         Vector3 collisionPos = MapModifier.Instance.CaculateCollisionPosFromGUIPoint(current.mousePosition);
@@ -155,7 +157,7 @@ public class MapSceneView
                 break;
         }
 
-
+        
         SceneView.RepaintAll();
     }
 
@@ -169,6 +171,8 @@ public class MapSceneView
     void DealWithGUIEventSecondStage()
     {
         Event current = Event.current;
+        int controlID = GUIUtility.GetControlID(FocusType.Passive);
+        HandleUtility.AddDefaultControl(controlID);
         Vector3 collisionPos = MapModifier.Instance.CaculateCollisionPosFromGUIPoint(current.mousePosition);
         collisionPos = new Vector3(collisionPos.x, 0, collisionPos.z);
         Vector3 lefttopcenter = MapModifier.Instance.CaculateCellCenterByPos(collisionPos);
