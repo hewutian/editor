@@ -121,7 +121,42 @@ public class MapSceneView
         Vector3 collisionPos = MapModifier.Instance.CaculateCollisionPosFromGUIPoint(current.mousePosition);
         collisionPos = new Vector3(collisionPos.x, 0, collisionPos.z);
         Vector3 lefttopcenter = MapModifier.Instance.CaculateCellCenterByPos(collisionPos);
-      //  Vector3 objectsize = 
+        int lefttopindex = MapModifier.Instance.CaculateIndexForPos(lefttopcenter);
+        Vector3 size = new Vector3(1, 0, 1);
+        var flag = MapModifier.Instance.CheckContainUnreachable(lefttopindex, size);
+        if(flag)
+        {
+            Handles.color = Color.green;
+        }
+        else
+        {
+            Handles.color = Color.red;
+        }
+        //  Vector3 objectsize = 
+        
+        Handles.DrawSolidDisc(lefttopcenter,Vector3.up,.5f);
+        switch (current.type)
+        {
+            case EventType.mouseDown:
+                if (current.button == 0)
+                {
+                    if(flag == false)
+                        MapModifier.Instance.AddUnreachableIndex(lefttopindex);
+                    else
+                        MapModifier.Instance.RemoveUnreachableIndex(lefttopindex);
+                    current.Use();
+                }
+                else if (current.button == 1)
+                {
+                    // Debug.Log(current.keyCode);
+                }
+                break;
+            default:
+                break;
+        }
+
+
+        SceneView.RepaintAll();
     }
 
     //第二阶段中对于事件的处理和辅助显示

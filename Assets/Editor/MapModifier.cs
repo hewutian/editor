@@ -38,7 +38,10 @@ public class MapModifier
 
     public void AddUnreachableIndex(int index)
     {
-
+        if(!cm.unreachable.Contains(index))
+        {
+            cm.unreachable.Add(index);
+        }
     }
 
     public void AddUnreachableIndexs(List<int> index)
@@ -48,7 +51,10 @@ public class MapModifier
 
     public void RemoveUnreachableIndex(int index)
     {
-
+        if(cm.unreachable.Contains(index))
+        {
+            cm.unreachable.Remove(index);
+        }
     }
 
     public void AddItem(CustomItemInfo iteminfo)
