@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Assets",
+    "\\Assets\\scripts",
+    "\\Assets\\scripts\\prefab_scripts"
   ],
+  "SelectedNode": "\\Assets\\scripts\\prefab_scripts",
   "PreviewInSolutionExplorer": false
 }
