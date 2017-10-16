@@ -67,13 +67,11 @@ public class MapModifier
     {
         var mousepos = Event.current.mousePosition;
         Ray screenTo = HandleUtility.GUIPointToWorldRay(mousepos);// SceneView.lastActiveSceneView.camera.ScreenPointToRay(mousepos);
-        Vector3 pos = new Vector3();
         RaycastHit hitinfo;
         if (Physics.Raycast(screenTo, out hitinfo))
-        {
-            pos = hitinfo.point;
-        }
-        return pos;
+            return hitinfo.point;
+        else
+            return new Vector3(0f, float.MaxValue, 0f);
     }
     //计算选择的模型的轮廓大小，主要看x,z
     public Vector3 CaculateGameObjectSize(int selected)
@@ -111,7 +109,7 @@ public class MapModifier
         int row = (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var indexUnitpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, pos.y, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
-        Debug.Log(indexUnitpos + "index");
+        // Debug.Log(indexUnitpos + "index");
         return indexUnitpos;
     }
     //根据位置来求对应的在地图中的小格子索引

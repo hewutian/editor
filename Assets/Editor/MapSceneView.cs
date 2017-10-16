@@ -121,6 +121,10 @@ public class MapSceneView
         //if (current == null)
         //    return;
         Vector3 collisionPos = MapModifier.Instance.CaculateCollisionPosFromGUIPoint(current.mousePosition);
+
+        if (collisionPos.y == float.MaxValue)
+            return;
+
         collisionPos = new Vector3(collisionPos.x, 0, collisionPos.z);
         Vector3 lefttopcenter = MapModifier.Instance.CaculateCellCenterByPos(collisionPos);
         int lefttopindex = MapModifier.Instance.CaculateIndexForPos(lefttopcenter);
