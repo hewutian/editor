@@ -47,7 +47,7 @@ public class EasytouchHierachyCallBack
         GameObject gameObject = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
         if (gameObject)//场景不是gameObject
         {
-            if (gameObject.name.Length >= 7 && gameObject.name.Substring(gameObject.name.Length - 7, 7) == "(Clone)")
+            if (gameObject.GetComponent<SceneMark>() != null)
             {
                 // 设置icon的位置与尺寸（Hierarchy窗口的左上角是起点）
                 Rect rect = new Rect(selectionRect.x + selectionRect.width - 16f, selectionRect.y, 16f, 16f);

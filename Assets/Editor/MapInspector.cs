@@ -38,9 +38,21 @@ public class MapInspector : Editor {
     //创建地图，并根据地图来生成不可达数据
     void GenerateBaseData()
     {
-        GameObject tmp = GameObject.Instantiate(cm.scene);
+        GameObject tmp = GameObject.Find(mapname);
+        if (tmp == null)
+        {
+            tmp = GameObject.Instantiate(cm.scene);
+            tmp.name = mapname;
+        }
         MapSceneView.Instance.CameraTop(tmp);
         MapModifier.Instance.GenerateBaseData();
+
+        SceneMark mark = tmp.GetComponent<SceneMark>();
+        if (mark == null)
+        {
+            mark = tmp.AddComponent<SceneMark>();
+            mark.customMapName = mapname;
+        }
     }
     //设置当前的地图编辑阶段
     void SetMapStage(int i)
@@ -61,7 +73,10 @@ public class MapInspector : Editor {
             if (e != null)
                 MapModifier.Instance.CreateGameObjectAndAddUnreachable(e);
         }
-    }
-        
+    }        
     
+    void OnEnable()
+    {
+        mapname = target.name;
+    }
 }
