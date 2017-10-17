@@ -41,6 +41,8 @@ public class MapInspector : Editor {
         GameObject tmp = GameObject.Instantiate(cm.scene);
         MapSceneView.Instance.CameraTop(tmp);
         MapModifier.Instance.GenerateBaseData();
+        SceneMark mark = tmp.AddComponent<SceneMark>();
+        mark.customMapName = mapname;
     }
     //设置当前的地图编辑阶段
     void SetMapStage(int i)
