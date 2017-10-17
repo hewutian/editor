@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Assets\scripts\DesignerNeed.cs" />
     <Compile Include="Assets\scripts\castline.cs" />
+    <Compile Include="Assets\scripts\prefab_scripts\SceneMark.cs" />
     <Compile Include="Assets\scripts\tilemap.cs" />
     <Compile Include="Assets\testwindow.cs" />
   </ItemGroup>
