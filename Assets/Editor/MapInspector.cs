@@ -23,11 +23,20 @@ public class MapInspector : Editor {
         if (GUILayout.Button("GenerateCustomData"))
             GenerareCustomData();
         if (GUILayout.Button("FirstStage"))
+        {
             SetMapStage(1);
+            SceneView.RepaintAll();//立刻重绘不等待Delegate
+        }
         if (GUILayout.Button("SecondStage"))
+        {
             SetMapStage(2);
+            SceneView.RepaintAll();//立刻重绘不等待Delegate;
+        }
         if (GUILayout.Button("Reset Stage"))
+        {
             SetMapStage(0);
+            SceneView.RepaintAll();//立刻重绘不等待Delegate
+        }
         if (GUILayout.Button("Clear custom Data"))
            ClearCustomData();
         if (cm == null)
@@ -64,6 +73,7 @@ public class MapInspector : Editor {
     {
         cm.itemlist.Clear();
         cm.unreachable.Clear();
+        cm.hasGeneratedData = false;
     }
     //根据地图中的物体信息，来生成他们
     public void GenerareCustomData()
