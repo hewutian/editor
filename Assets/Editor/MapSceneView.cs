@@ -86,10 +86,12 @@ public class MapSceneView
         {
             case 1:
                 SceneView.onSceneGUIDelegate -= SceneGuiDelegateSecond;
+                SceneView.onSceneGUIDelegate -= SceneGuiDelegateFirst;//防止多次绘制
                 SceneView.onSceneGUIDelegate += SceneGuiDelegateFirst;
                 break;
             case 2:
                 SceneView.onSceneGUIDelegate -= SceneGuiDelegateFirst;
+                SceneView.onSceneGUIDelegate -= SceneGuiDelegateSecond;//防止多次绘制
                 SceneView.onSceneGUIDelegate += SceneGuiDelegateSecond;
                 break;
             default:

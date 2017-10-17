@@ -144,7 +144,16 @@ public class MapModifier
         GameObject objTarget;
         objTarget = GameObject.Instantiate(ResourceCenter.Instance.prefabObjects[index]);
         if (objTarget)
+        {
             objTarget.transform.position = center;
+            objTarget.transform.parent = GameObject.FindObjectOfType<SceneMark>().gameObject.transform;
+
+            if (objTarget.GetComponent<ItemMark>() == null)
+            {
+                ItemMark itemMark = objTarget.AddComponent<ItemMark>();
+                itemMark.sceneMark = GameObject.FindObjectOfType<SceneMark>();
+            }
+        }
     }
     
     public void AddNewItem(int posindex, Vector3 size, int itemindex)

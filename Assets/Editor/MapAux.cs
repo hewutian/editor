@@ -38,6 +38,8 @@ public class MapAux
         Handles.DrawLine(p2, p3);
         Handles.DrawLine(p3, p4);
         Handles.DrawLine(p4, p1);
+
+        DrawCrossOnRect(p1, p2, p4, p3, cl);
     }
 
     public static void DrawGameObjectBorder(Vector3  center,Vector3 size, float unitlength, Color cl)
@@ -49,6 +51,15 @@ public class MapAux
     {
 
     }
+    
+    //在特定的格子上画叉
+    private static void DrawCrossOnRect(Vector3 lt, Vector3 lb, Vector3 rt, Vector3 rb, Color cl)
+    {
+        Handles.color = cl;
+        Handles.DrawLine(lt, rb);
+        Handles.DrawLine(lb, rt);
+    }
+
     //根据左上格子的中心位置来绘制一定规格的矩形
     public static void DrawLines(Vector3 pos, Vector3 size, Color cl)
     {

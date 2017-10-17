@@ -19,15 +19,41 @@ public class MapInspector : Editor {
         // if (GUILayout.Button("open map designer editor"))
         //    MapDesignerWindow.Init();
         if (GUILayout.Button("GenerateBaseData"))
-            GenerateBaseData();
+        {
+            //每次至多只应该有一个CustomMap处于被编辑状态
+            if (existCustomMapBeGenerated())
+            {
+                if (UnityEditor.EditorUtility.DisplayDialog("Info","Start A New CustomMap Edit?","Yes","Cancel"))
+                {
+                    // Debug.Log("OK");
+                    SetMapStage(0);
+                    SceneView.RepaintAll();
+                    Object.DestroyImmediate(GameObject.FindObjectOfType<SceneMark>().gameObject);
+                    GenerateBaseData();
+                }
+            }
+            else
+            {
+                GenerateBaseData();
+            }
+        }
         if (GUILayout.Button("GenerateCustomData"))
             GenerareCustomData();
         if (GUILayout.Button("FirstStage"))
+        {
             SetMapStage(1);
+            SceneView.RepaintAll();//立刻重绘不等待Delegate
+        }
         if (GUILayout.Button("SecondStage"))
+        {
             SetMapStage(2);
+            SceneView.RepaintAll();//立刻重绘不等待Delegate;
+        }
         if (GUILayout.Button("Reset Stage"))
+        {
             SetMapStage(0);
+            SceneView.RepaintAll();//立刻重绘不等待Delegate
+        }
         if (GUILayout.Button("Clear custom Data"))
            ClearCustomData();
         if (cm == null)
@@ -64,6 +90,7 @@ public class MapInspector : Editor {
     {
         cm.itemlist.Clear();
         cm.unreachable.Clear();
+        cm.hasGeneratedData = false;
     }
     //根据地图中的物体信息，来生成他们
     public void GenerareCustomData()
@@ -73,7 +100,12 @@ public class MapInspector : Editor {
             if (e != null)
                 MapModifier.Instance.CreateGameObjectAndAddUnreachable(e);
         }
-    }        
+    }
+
+    private bool existCustomMapBeGenerated()
+    {
+        return GameObject.FindObjectOfType<SceneMark>() != null;
+    }
     
     void OnEnable()
     {
