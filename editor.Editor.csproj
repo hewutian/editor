@@ -128,6 +128,7 @@
     <Compile Include="Assets\Editor\CustomMapAssetCreator.cs" />
     <Compile Include="Assets\Editor\CustomMapDef.cs" />
     <Compile Include="Assets\Editor\Helper.cs" />
+    <Compile Include="Assets\Editor\HierarchyIcon.cs" />
     <Compile Include="Assets\Editor\MapAux.cs" />
     <Compile Include="Assets\Editor\MapDesignerWindow.cs" />
     <Compile Include="Assets\Editor\MapInspector.cs" />

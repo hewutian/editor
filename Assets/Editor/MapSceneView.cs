@@ -95,6 +95,7 @@ public class MapSceneView
             default:
                 SceneView.onSceneGUIDelegate -= SceneGuiDelegateFirst;
                 SceneView.onSceneGUIDelegate -= SceneGuiDelegateSecond;
+                
                 break;
         }
     }
