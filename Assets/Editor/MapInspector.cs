@@ -19,7 +19,24 @@ public class MapInspector : Editor {
         // if (GUILayout.Button("open map designer editor"))
         //    MapDesignerWindow.Init();
         if (GUILayout.Button("GenerateBaseData"))
-            GenerateBaseData();
+        {
+            //每次至多只应该有一个CustomMap处于被编辑状态
+            if (existCustomMapBeGenerated())
+            {
+                if (UnityEditor.EditorUtility.DisplayDialog("Info","Start A New CustomMap Edit?","Yes","Cancel"))
+                {
+                    // Debug.Log("OK");
+                    SetMapStage(0);
+                    SceneView.RepaintAll();
+                    Object.DestroyImmediate(GameObject.FindObjectOfType<SceneMark>().gameObject);
+                    GenerateBaseData();
+                }
+            }
+            else
+            {
+                GenerateBaseData();
+            }
+        }
         if (GUILayout.Button("GenerateCustomData"))
             GenerareCustomData();
         if (GUILayout.Button("FirstStage"))
@@ -83,7 +100,12 @@ public class MapInspector : Editor {
             if (e != null)
                 MapModifier.Instance.CreateGameObjectAndAddUnreachable(e);
         }
-    }        
+    }
+
+    private bool existCustomMapBeGenerated()
+    {
+        return GameObject.FindObjectOfType<SceneMark>() != null;
+    }
     
     void OnEnable()
     {

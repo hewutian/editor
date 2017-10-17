@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneMark : MonoBehaviour {
+public class ItemMark : MonoBehaviour {
     [SerializeField, HideInInspector]
-    public string customMapName;
+    public SceneMark sceneMark;
 }
