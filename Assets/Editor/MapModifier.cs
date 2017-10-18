@@ -292,4 +292,39 @@ public class MapModifier
         cm.unreachable.Add(index);
         //return centerpos;
     }
+
+    public int CaculatePaintedGridFromUnitIndex(int lefttopindex)
+    {
+        int scale = cm.paintedgridlength / cm.unitlength;
+        int rank = lefttopindex % (cm.mapwidth / cm.unitlength) + 1;
+        int row = lefttopindex / (cm.mapwidth / cm.unitlength) + 1;
+        int gridrow = (int)Mathf.Ceil(row /(float) scale);
+        int gridrank = (int)Mathf.Ceil(rank / (float)scale);
+        int gridindex = (gridrow - 1) * cm.mapwidth / cm.paintedgridlength + (gridrank - 1);
+        return gridindex;
+    }
+
+    public int CaculateLefttopUnitIndexOfGrid(int gridindex)
+    {
+        
+
+
+        return 1;
+    }
+
+    public int[] CaculateUnitIndexesOfGrid(int gridindex)
+    {
+        int scale = cm.paintedgridlength / cm.unitlength;
+        int[] indexes = new int[scale * scale];
+        int rank = gridindex % (cm.mapwidth / cm.paintedgridlength) ;
+        int row = gridindex / (cm.mapwidth / cm.paintedgridlength) ;
+
+        int startnum = row * (cm.mapwidth / cm.paintedgridlength) * scale * scale + rank * scale;
+        for(int i = 0;i<scale;++i)
+            for(int j=0;j<scale;++j)
+            {
+                indexes[scale * i +  j] = startnum + (cm.mapwidth / cm.unitlength) * i + j;
+            }
+        return indexes;
+    }
 }

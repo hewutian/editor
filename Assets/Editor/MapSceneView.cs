@@ -189,12 +189,21 @@ public class MapSceneView
         Vector3 lefttopcenter = MapModifier.Instance.CaculateCellCenterByPos(collisionPos);
         Vector3 objectsize = MapModifier.Instance.CaculateGameObjectSize(selected);
         int lefttopindex = MapModifier.Instance.CaculateIndexForPos(lefttopcenter);
-        Vector3 buildcenter = MapModifier.Instance.CaculateCreateGameObjectCenter(lefttopcenter,objectsize);
-        var flag = MapModifier.Instance.CheckContainUnreachable(lefttopindex, objectsize);
+        int biggridindex = MapModifier.Instance.CaculatePaintedGridFromUnitIndex(lefttopindex);
+        //int girdlefttopindex = MapModifier.Instance.CaculateLefttopUnitIndexOfGrid(biggridindex);
+        int[] unitindexes = MapModifier.Instance.CaculateUnitIndexesOfGrid(biggridindex);
+        int girdlefttopindex = unitindexes[0];
+        Vector3 girdlefttopcenter = MapModifier.Instance.TranselateIndexToPostion(girdlefttopindex);
+        Vector3 buildcenter = MapModifier.Instance.CaculateCreateGameObjectCenter(girdlefttopcenter, objectsize);
+        var flag = MapModifier.Instance.CheckContainUnreachable(girdlefttopindex, objectsize);
+        //if (flag == true)
+        //    MapAux.DrawLines(lefttopcenter, objectsize, Color.red);
+        //else
+        //    MapAux.DrawLines(lefttopcenter, objectsize, Color.green);
         if (flag == true)
-            MapAux.DrawLines(lefttopcenter, objectsize, Color.red);
+            MapAux.DrawLines(girdlefttopcenter, objectsize, Color.red);
         else
-            MapAux.DrawLines(lefttopcenter, objectsize, Color.green);
+            MapAux.DrawLines(girdlefttopcenter, objectsize, Color.green);
 
         switch (current.type)
         {
