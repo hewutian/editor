@@ -107,7 +107,7 @@ public class MapSceneView
         FirstStageGuiTool(sv);
         CustomMap cm = MapModifier.Instance.CurMap;
         Vector3 mapsize = MapModifier.Instance.MapSize;
-        MapAux.DrawMapCells(new Vector3(0, 0, 0), mapsize, cm.unitlength, Color.yellow);
+        MapAux.DrawMapCells(Vector3.zero, mapsize, cm.unitlength, Color.yellow);
         foreach (var e in cm.unreachable)
         {
             Vector3 center = MapModifier.Instance.TranselateIndexToPostion(e);
@@ -181,6 +181,10 @@ public class MapSceneView
         int controlID = GUIUtility.GetControlID(FocusType.Passive);
         HandleUtility.AddDefaultControl(controlID);
         Vector3 collisionPos = MapModifier.Instance.CaculateCollisionPosFromGUIPoint(current.mousePosition);
+
+        if (collisionPos.y == float.MaxValue)
+            return;
+
         collisionPos = new Vector3(collisionPos.x, 0, collisionPos.z);
         Vector3 lefttopcenter = MapModifier.Instance.CaculateCellCenterByPos(collisionPos);
         Vector3 objectsize = MapModifier.Instance.CaculateGameObjectSize(selected);

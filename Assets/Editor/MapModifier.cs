@@ -6,6 +6,8 @@ public class MapModifier
 {
     CustomMap cm;
     Vector3 mapsize;
+
+    [SerializeField]
     Vector3 maplefttopcenter;
      static MapModifier instance;
     public static MapModifier Instance
@@ -127,6 +129,11 @@ public class MapModifier
         int xlength = (int)size.x / cm.unitlength;
         int zlength = (int)size.z / cm.unitlength;
         int num = xlength * zlength;
+
+        //格子越界
+        if (siteindex % (cm.mapwidth / cm.unitlength) + xlength > (cm.mapwidth / cm.unitlength))
+            return true;
+
         var unreachable = cm.unreachable;
         for (int i = 0; i < num; ++i)
         {
