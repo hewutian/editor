@@ -84,7 +84,6 @@ public static class CustomMapJsonMgr {
         int num = fstream.Read(byteData, 0, byteData.Length);
         string json_text = Encoding.UTF8.GetString(byteData);
 
-        //有个bug，现在无法直接调用这个接口将它转化成CustomMap
-        cm = JsonUtility.FromJson<CustomMap>(json_text) as CustomMap;
+        JsonUtility.FromJsonOverwrite(json_text, cm);
     }
 }
