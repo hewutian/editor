@@ -41,8 +41,15 @@ public class MapInspector : Editor {
             GenerareCustomData();
         if (GUILayout.Button("FirstStage"))
         {
-            SetMapStage(1);
-            SceneView.RepaintAll();//立刻重绘不等待Delegate
+            if (target.name != GameObject.FindObjectOfType<SceneMark>().gameObject.name)
+            {
+                if (UnityEditor.EditorUtility.DisplayDialog("Error","You are editing another CustomMap!\nYou can click the Button <GenerateBaseData> to Change Edit target","Ok"));
+            }
+            else
+            {
+                SetMapStage(1);
+                SceneView.RepaintAll();//立刻重绘不等待Delegate
+            }
         }
         if (GUILayout.Button("SecondStage"))
         {
