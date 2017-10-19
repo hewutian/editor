@@ -23,7 +23,7 @@ public class MapInspector : Editor {
             //每次至多只应该有一个CustomMap处于被编辑状态
             if (existCustomMapBeGenerated())
             {
-                if (UnityEditor.EditorUtility.DisplayDialog("Info","Start A New CustomMap Edit?","Yes","Cancel"))
+                if (UnityEditor.EditorUtility.DisplayDialog("Info", "Start A New CustomMap Edit?", "Yes", "Cancel"))
                 {
                     // Debug.Log("OK");
                     SetMapStage(0);
@@ -43,7 +43,10 @@ public class MapInspector : Editor {
         {
             if (target.name != GameObject.FindObjectOfType<SceneMark>().gameObject.name)
             {
-                if (UnityEditor.EditorUtility.DisplayDialog("Error","You are editing another CustomMap!\nYou can click the Button <GenerateBaseData> to Change Edit target","Ok"));
+                if (UnityEditor.EditorUtility.DisplayDialog("Error", "You are editing another CustomMap!\nYou can click the Button <GenerateBaseData> to Change Edit target", "Ok"))
+                {
+                    //DoNothing
+                }
             }
             else
             {
@@ -62,7 +65,17 @@ public class MapInspector : Editor {
             SceneView.RepaintAll();//立刻重绘不等待Delegate
         }
         if (GUILayout.Button("Clear custom Data"))
-           ClearCustomData();
+            ClearCustomData();
+        if (GUILayout.Button("Save CustomMap as Json"))
+            CustomMapJsonMgr.MapDataToJson(target);
+        if (GUILayout.Button("Import Json as CustomMap"))
+        {
+            string file_name = EditorUtility.OpenFilePanelWithFilters("Json File", Application.dataPath + "/Json", new string[2] { "JSON", "json" });
+            if (file_name != "")
+            {
+                CustomMapJsonMgr.JsonToMapData((CustomMap)target, file_name);
+            }
+        }
         if (cm == null)
             cm = (CustomMap)target;
         MapModifier.Instance.SetCustomMap(cm);
