@@ -47,7 +47,7 @@ public static class CustomMapJsonMgr {
         //文件已存在，则提示是否覆盖成新的
         else
         {
-            if (UnityEditor.EditorUtility.DisplayDialog("Notice", target.name + ".json " + " existed, Click <OK> to cover the old file", "OK", "Cancel"))
+            if (UnityEditor.EditorUtility.DisplayDialog("Notice", target.name + ".json existed, Click <OK> to cover the old file", "OK", "Cancel"))
             {
                 File.Delete(directory + "/" + target.name + ".json");
                 try
@@ -73,7 +73,7 @@ public static class CustomMapJsonMgr {
     /// <summary>
     /// 外部Json文件导入成CustomMap文件
     /// </summary>
-    /// <param name="json_text">Json字符串</param>
+    /// <param name="json_text">Json文件路径</param>
     public static void JsonToMapData(CustomMap cm, string json_path)
     {
         FileStream fstream = File.OpenRead(json_path);

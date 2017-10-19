@@ -43,7 +43,10 @@ public class MapInspector : Editor {
         {
             if (target.name != GameObject.FindObjectOfType<SceneMark>().gameObject.name)
             {
-                if (UnityEditor.EditorUtility.DisplayDialog("Error", "You are editing another CustomMap!\nYou can click the Button <GenerateBaseData> to Change Edit target", "Ok")) ;
+                if (UnityEditor.EditorUtility.DisplayDialog("Error", "You are editing another CustomMap!\nYou can click the Button <GenerateBaseData> to Change Edit target", "Ok"))
+                {
+                    //DoNothing
+                }
             }
             else
             {
@@ -63,9 +66,9 @@ public class MapInspector : Editor {
         }
         if (GUILayout.Button("Clear custom Data"))
             ClearCustomData();
-        if (GUILayout.Button("ScriptableObject to Json"))
+        if (GUILayout.Button("Save CustomMap as Json"))
             CustomMapJsonMgr.MapDataToJson(target);
-        if (GUILayout.Button("Json to CustomMap"))
+        if (GUILayout.Button("Import Json as CustomMap"))
         {
             string file_name = EditorUtility.OpenFilePanelWithFilters("Json File", Application.dataPath + "/Json", new string[2] { "JSON", "json" });
             if (file_name != "")
