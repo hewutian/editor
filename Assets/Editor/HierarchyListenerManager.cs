@@ -12,9 +12,7 @@ public class NewBehaviourScript : HierarchyListener
     public override void Update()
     {
         //只在Editor下处理
-        if (EditorApplication.isPlaying)
-            return;
-
+#if UNITY_EDITOR
         //Debug.Log ("每一帧回调一次");
         instanceIDArray.Clear();
         GameObject[] pAllObjects = (GameObject[])Resources.FindObjectsOfTypeAll(typeof(GameObject));
@@ -42,6 +40,7 @@ public class NewBehaviourScript : HierarchyListener
         {
             gameDict.Remove(key);
         }
+#endif
     }
 
     public override void OnPlaymodeStateChanged(PlayModeState playModeState)
@@ -57,8 +56,7 @@ public class NewBehaviourScript : HierarchyListener
     public override void HierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
     {
         //只在Editor模式下处理
-        if (EditorApplication.isPlaying)
-            return;
+#if UNITY_EDITOR
         //Debug.Log (string.Format ("{0} : {1} - {2}", EditorUtility.InstanceIDToObject (instanceID), instanceID, selectionRect));
         GameObject instance = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
         if (instance != null && instance.GetComponent<SceneMark>() != null)
@@ -68,6 +66,7 @@ public class NewBehaviourScript : HierarchyListener
                 gameDict.Add(instanceID, instance);
             }
         }
+#endif
     }
 
     public override void OnHierarchyWindowChanged()
