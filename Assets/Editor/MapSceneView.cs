@@ -181,14 +181,18 @@ public class MapSceneView
         int controlID = GUIUtility.GetControlID(FocusType.Passive);
         HandleUtility.AddDefaultControl(controlID);
         Vector3 collisionPos = MapModifier.Instance.CaculateCollisionPosFromGUIPoint(current.mousePosition);
-
         if (collisionPos.y == float.MaxValue)
             return;
-
         collisionPos = new Vector3(collisionPos.x, 0, collisionPos.z);
         Vector3 lefttopcenter = MapModifier.Instance.CaculateCellCenterByPos(collisionPos);
         Vector3 objectsize = MapModifier.Instance.CaculateGameObjectSize(selected);
         int lefttopindex = MapModifier.Instance.CaculateIndexForPos(lefttopcenter);
+        //Vector3 buildcenter = MapModifier.Instance.CaculateCreateGameObjectCenter(lefttopcenter, objectsize);
+        //var flag = MapModifier.Instance.CheckContainUnreachable(lefttopindex, objectsize);
+        //if (flag == true)
+        //    MapAux.DrawLines(lefttopcenter, objectsize, Color.red);
+        //else
+        //    MapAux.DrawLines(lefttopcenter, objectsize, Color.green);
         int biggridindex = MapModifier.Instance.CaculatePaintedGridFromUnitIndex(lefttopindex);
         //int girdlefttopindex = MapModifier.Instance.CaculateLefttopUnitIndexOfGrid(biggridindex);
         int[] unitindexes = MapModifier.Instance.CaculateUnitIndexesOfGrid(biggridindex);
@@ -196,22 +200,17 @@ public class MapSceneView
         Vector3 girdlefttopcenter = MapModifier.Instance.TranselateIndexToPostion(girdlefttopindex);
         Vector3 buildcenter = MapModifier.Instance.CaculateCreateGameObjectCenter(girdlefttopcenter, objectsize);
         var flag = MapModifier.Instance.CheckContainUnreachable(girdlefttopindex, objectsize);
-        //if (flag == true)
-        //    MapAux.DrawLines(lefttopcenter, objectsize, Color.red);
-        //else
-        //    MapAux.DrawLines(lefttopcenter, objectsize, Color.green);
         if (flag == true)
             MapAux.DrawLines(girdlefttopcenter, objectsize, Color.red);
         else
             MapAux.DrawLines(girdlefttopcenter, objectsize, Color.green);
-
         switch (current.type)
         {
             case EventType.mouseDown:
                 if (current.button == 0 && (!flag))
                 {
-                    MapModifier.Instance.AddObject(lefttopindex, buildcenter, selected);
-                    MapModifier.Instance.AddNewItem(lefttopindex, objectsize, selected);
+                    MapModifier.Instance.AddObject(girdlefttopindex, buildcenter, selected);
+                    MapModifier.Instance.AddNewItem(girdlefttopindex, objectsize, selected);
                     current.Use();
                 }
                 else if (current.button == 1)

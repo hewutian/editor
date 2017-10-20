@@ -10,14 +10,24 @@ public enum e_ItemType
 
 }
 
+public enum e_NodeType
+{
+    SourcePoint = 0,
+    MonsterPoint,
+}
 
-
+public enum e_AreaType
+{
+    Event = 0,
+}
 
 [System.Serializable]
-public class CustomItemInfo :ScriptableObject
+public class CustomItemInfo : ScriptableObject
 {
     public e_ItemType type;
+
     public float posy;
+
     public int lefttopsite;
     public int width;
     public int height;
@@ -25,3 +35,19 @@ public class CustomItemInfo :ScriptableObject
     public GameObject prefab;
 }
 
+[System.Serializable]
+public class NodeInfo:ScriptableObject
+{
+    public e_NodeType type;
+    public int mapIndex;
+    public float posy;
+}
+
+[System.Serializable]
+public class AreaInfo:ScriptableObject
+{
+    public e_AreaType type;
+    public int width;
+    public int height;
+    public int lefttopindex;
+}

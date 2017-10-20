@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class CustomMap : ScriptableObject {
 
     public int mapwidth;
@@ -17,7 +18,14 @@ public class CustomMap : ScriptableObject {
     public Vector3 center;
 
     //public CustomItemInfo[] itemList = new CustomItemInfo[0];
-    public List<CustomItemInfo> itemlist = new List<CustomItemInfo>();
+    [SerializeField]
+    public List<CustomItemInfo> itemlist = new List<CustomItemInfo>(1);
+
+    [SerializeField]
     public List<int> unreachable = new List<int>();
+
+    [SerializeField]
+    public List<NodeInfo> designerNode = new List<NodeInfo>();
+    public List<AreaInfo> designerArea = new List<AreaInfo>();
     //public int[] unreachable = new int[0];
 }
