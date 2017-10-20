@@ -82,8 +82,8 @@ public static class CustomMap2DataPool {
 
             fstream.Seek(0, SeekOrigin.End);
             fstream.Write(byteData, 0, byteData.Length);
-            Debug.Log(byteData.Length);
-            Debug.Log(context);
+            //Debug.Log(byteData.Length);
+            //Debug.Log(context);
         }
         catch (IOException ex)
         {

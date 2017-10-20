@@ -24,9 +24,6 @@ public static class CustomMapJsonMgr {
             Directory.CreateDirectory(directory);
 
         string json_text = JsonUtility.ToJson(target);
-        //test(json_text);
-        CustomMap2DataPool.Convert2DataPool((CustomMap)target);
-        // Debug.Log("\"");
 
         //当文件不存在时直接生成
         if (!File.Exists(directory + "/" + target.name + ".json"))
@@ -89,22 +86,5 @@ public static class CustomMapJsonMgr {
         string json_text = Encoding.UTF8.GetString(byteData);
 
         JsonUtility.FromJsonOverwrite(json_text, cm);
-    }
-
-    public static void test (string json_text)
-    {
-        JsonData temp = JsonMapper.ToObject(json_text);
-        
-        foreach (var pair in temp)
-        {
-            JsonData other_temp = ((KeyValuePair<string, JsonData>)pair).Value;
-            if (other_temp.IsArray)
-            {
-                foreach (var item in other_temp)
-                {
-                    Debug.Log(((KeyValuePair<string, JsonData>)pair).Key + item);
-                }
-            }
-        }
     }
 }
