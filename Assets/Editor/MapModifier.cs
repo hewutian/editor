@@ -111,7 +111,7 @@ public class MapModifier
         int row = (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var indexUnitpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, pos.y, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
-        // Debug.Log(indexUnitpos + "index");
+         Debug.Log(indexUnitpos + "-------indexUnitpos");
         return indexUnitpos;
     }
     //根据位置来求对应的在地图中的小格子索引
@@ -121,6 +121,7 @@ public class MapModifier
         int rank = (int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
         int row = (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank - 1);
+        Debug.Log(index + "----index");
         return index;
     }
     //根据左上索引和轮廓来看是否包含了不可达的位置
@@ -211,7 +212,9 @@ public class MapModifier
             bool res = CastLine(p, dir, max);
             if (res == false)
             {
-                unreachable.Add(i); //保存的这个i是地图的小格子 从0开始计数
+                
+                int num = CaculateIndexForPos(new Vector3(p.x,0,p.z));
+                unreachable.Add(num); //保存的这个i是地图的小格子 从0开始计数
             }
             i++;
         }
@@ -225,9 +228,14 @@ public class MapModifier
         if (Physics.Raycast(pos, dir, out hit))
         {
             float depth = hit.point.y;
+           
             if (depth <= max)
             {
                 flag = true;
+            }
+            else
+            {
+                Debug.Log(hit.point);
             }
         }
         return flag;
