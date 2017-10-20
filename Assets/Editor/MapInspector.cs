@@ -76,6 +76,10 @@ public class MapInspector : Editor
                 CustomMapJsonMgr.JsonToMapData((CustomMap)target, file_name);
             }
         }
+        if (GUILayout.Button("Save CustomMap as dpc"))
+        {
+            CustomMap2DataPool.Convert2DataPool((CustomMap)target);
+        }
         if (cm == null)
             cm = (CustomMap)target;
         MapModifier.Instance.SetCustomMap(cm);
