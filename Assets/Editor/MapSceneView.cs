@@ -113,7 +113,7 @@ public class MapSceneView
         FirstStageGuiTool(sv);
         CustomMap cm = MapModifier.Instance.CurMap;
         Vector3 mapsize = MapModifier.Instance.MapSize;
-        MapAux.DrawMapCells(Vector3.zero, mapsize, cm.unitlength, Color.yellow);
+        MapAux.DrawMapCells(cm.center, mapsize, cm.unitlength, Color.yellow);
         foreach (var e in cm.unreachable)
         {
             Vector3 center = MapModifier.Instance.TranselateIndexToPostion(e);
@@ -238,7 +238,7 @@ public class MapSceneView
 
         CustomMap cm = MapModifier.Instance.CurMap;
         Vector3 mapsize = MapModifier.Instance.MapSize;
-        MapAux.DrawMapCells(Vector3.zero, mapsize, cm.unitlength, Color.yellow);
+        MapAux.DrawMapCells(cm.center, mapsize, cm.unitlength, Color.yellow);
         foreach (var e in cm.unreachable)
         {
             Vector3 center = MapModifier.Instance.TranselateIndexToPostion(e);

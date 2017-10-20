@@ -236,10 +236,11 @@ public class MapModifier
     void GenerateBaseUnreachableData()
     {
         List<Vector3> positions = new List<Vector3>();
-        for (int i = 0; i < cm.mapwidth / cm.tilelength; ++i)
-            for (int j = 0; j < cm.mapheight / cm.tilelength; ++j)
+        for (int i = 0; i < cm.mapwidth / cm.unitlength; ++i)
+            for (int j = 0; j < cm.mapheight / cm.unitlength; ++j)
             {
-                Vector3 pos = new Vector3((float)(i - cm.mapwidth / 2 + 0.5) * cm.tilelength, 1000, (float)(j - cm.mapheight / 2 + 0.5) * cm.tilelength);
+                // Vector3 pos = new Vector3((float)(i - cm.mapwidth / 2 + 0.5) * cm.tilelength, 1000, (float)(j - cm.mapheight / 2 + 0.5) * cm.tilelength);
+                Vector3 pos = new Vector3(cm.unitlength*i + maplefttopcenter.x, 1000, maplefttopcenter.z - cm.unitlength*j);
                 positions.Add(pos);
             }
         // AssetDatabase.Refresh();

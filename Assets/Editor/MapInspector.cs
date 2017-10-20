@@ -7,17 +7,12 @@ using UnityEditor;
 [CustomEditor(typeof(CustomMap))]
 public class MapInspector : Editor
 {
-        
-    public string mapname = "test";
+       public string mapname = "test";
     public CustomMap cm;
     public static e_ItemType chooseType;
-
     public override void OnInspectorGUI()
     {
-
         GUILayout.Label(string.Format("this is a custom map :{0}", mapname));
-        // if (GUILayout.Button("open map designer editor"))
-        //    MapDesignerWindow.Init();
         if (GUILayout.Button("GenerateBaseData"))
         {
             //每次至多只应该有一个CustomMap处于被编辑状态
@@ -25,7 +20,6 @@ public class MapInspector : Editor
             {
                 if (UnityEditor.EditorUtility.DisplayDialog("Info", "Start A New CustomMap Edit?", "Yes", "Cancel"))
                 {
-                    // Debug.Log("OK");
                     SetMapStage(0);
                     SceneView.RepaintAll();
                     Object.DestroyImmediate(GameObject.FindObjectOfType<SceneMark>().gameObject);
@@ -59,7 +53,6 @@ public class MapInspector : Editor
             SetMapStage(2);
             SceneView.RepaintAll();//立刻重绘不等待Delegate;
         }
-
         if (GUILayout.Button("PointAndAreaStage"))
         {
             if (target.name != GameObject.FindObjectOfType<SceneMark>().gameObject.name)
@@ -101,8 +94,7 @@ public class MapInspector : Editor
             cm = (CustomMap)target;
         MapModifier.Instance.SetCustomMap(cm);
         base.OnInspectorGUI();
-        
-    }
+     }
     //创建地图，并根据地图来生成不可达数据
     void GenerateBaseData()
     {
@@ -121,10 +113,7 @@ public class MapInspector : Editor
             mark = tmp.AddComponent<SceneMark>();
             mark.customMapName = mapname;
         }
-        
-
-
-    }
+     }
     //设置当前的地图编辑阶段
     void SetMapStage(int i)
     {
@@ -148,15 +137,12 @@ public class MapInspector : Editor
                 MapModifier.Instance.CreateGameObjectAndAddUnreachable(e);
         }
     }
-
     private bool existCustomMapBeGenerated()
     {
         return GameObject.FindObjectOfType<SceneMark>() != null;
     }
-    
-    void OnEnable()
+     void OnEnable()
     {
         mapname = target.name;
-
     }
 }
