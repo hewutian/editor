@@ -327,4 +327,46 @@ public class MapModifier
             }
         return indexes;
     }
+
+    public void AddPoint(Vector3 site)
+    {
+        NodeInfo tmp = new NodeInfo();
+        tmp.site = site;
+        if(!cm.designerNode.Contains(tmp))
+        {
+            cm.designerNode.Add(tmp);
+        }
+    }
+
+    public void AddArea(Vector3 start,Vector3 end)
+    {
+        AreaInfo tmp = new AreaInfo();
+        tmp.start = start;
+        tmp.end = end;
+        if (!cm.designerArea.Contains(tmp))
+        {
+            cm.designerArea.Add(tmp);
+        }
+    }
+
+    public void ShowAreaFreeMoveHandles()
+    {
+        Handles.color = Color.green;
+        foreach( var e in cm.designerArea)
+        {
+            e.start = Handles.FreeMoveHandle(e.start, Quaternion.identity, .5f, Vector3.zero, Handles.CubeHandleCap);
+            e.end = Handles.FreeMoveHandle(e.end, Quaternion.identity, .5f, Vector3.zero, Handles.CubeHandleCap);
+            MapAux.DrawRectHandles(e.start, e.end);
+        }
+    }
+
+    public void ShowPointFreeMoveHandles()
+    {
+        Handles.color = Color.green;
+        foreach (var e in cm.designerNode)
+        {
+            e.site = Handles.FreeMoveHandle(e.site, Quaternion.identity, .25f, Vector3.zero, Handles.SphereHandleCap);
+            Handles.DrawWireDisc(e.site, Vector3.up, .5f);
+        }
+    }
 }

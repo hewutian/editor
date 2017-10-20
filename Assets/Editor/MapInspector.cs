@@ -5,16 +5,16 @@ using UnityEditor;
 
 
 [CustomEditor(typeof(CustomMap))]
-public class MapInspector : Editor {
+public class MapInspector : Editor
+{
         
     public string mapname = "test";
     public CustomMap cm;
     public static e_ItemType chooseType;
 
-
-    //
     public override void OnInspectorGUI()
     {
+
         GUILayout.Label(string.Format("this is a custom map :{0}", mapname));
         // if (GUILayout.Button("open map designer editor"))
         //    MapDesignerWindow.Init();
@@ -59,6 +59,23 @@ public class MapInspector : Editor {
             SetMapStage(2);
             SceneView.RepaintAll();//立刻重绘不等待Delegate;
         }
+
+        if (GUILayout.Button("PointAndAreaStage"))
+        {
+            if (target.name != GameObject.FindObjectOfType<SceneMark>().gameObject.name)
+            {
+                if (UnityEditor.EditorUtility.DisplayDialog("Error", "You are editing another CustomMap!\nYou can click the Button <GenerateBaseData> to Change Edit target", "Ok"))
+                {
+                    //DoNothing
+                }
+            }
+            else
+            {
+                SetMapStage(3);
+                SceneView.RepaintAll();//立刻重绘不等待Delegate
+            }
+        }
+
         if (GUILayout.Button("Reset Stage"))
         {
             SetMapStage(0);
@@ -84,6 +101,7 @@ public class MapInspector : Editor {
             cm = (CustomMap)target;
         MapModifier.Instance.SetCustomMap(cm);
         base.OnInspectorGUI();
+        
     }
     //创建地图，并根据地图来生成不可达数据
     void GenerateBaseData()
@@ -103,6 +121,9 @@ public class MapInspector : Editor {
             mark = tmp.AddComponent<SceneMark>();
             mark.customMapName = mapname;
         }
+        
+
+
     }
     //设置当前的地图编辑阶段
     void SetMapStage(int i)
@@ -114,6 +135,8 @@ public class MapInspector : Editor {
     {
         cm.itemlist.Clear();
         cm.unreachable.Clear();
+        cm.designerNode.Clear();
+        cm.designerArea.Clear();
         cm.hasGeneratedData = false;
     }
     //根据地图中的物体信息，来生成他们
@@ -134,5 +157,6 @@ public class MapInspector : Editor {
     void OnEnable()
     {
         mapname = target.name;
+
     }
 }
