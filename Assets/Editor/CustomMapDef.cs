@@ -41,6 +41,7 @@ public class NodeInfo:ScriptableObject
     public e_NodeType type;
     public int mapIndex;
     public float posy;
+    public Vector3 site;
 }
 
 [System.Serializable]
@@ -50,4 +51,6 @@ public class AreaInfo:ScriptableObject
     public int width;
     public int height;
     public int lefttopindex;
+    public Vector3 start;
+    public Vector3 end;
 }

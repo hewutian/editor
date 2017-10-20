@@ -60,6 +60,22 @@ public class MapAux
         Handles.DrawLine(lb, rt);
     }
 
+    public static void DrawRectHandles(Vector3 start,Vector3 end)
+    {
+
+        //Vector3[] verts = {start, new Vector3(end.x,start.y,start.z) , end, new Vector3(start.x, start.y, end.z) };
+        //  Handles.color = Color.green;
+        //Handles.DrawSolidRectangleWithOutline(verts, new Color(1, 1, 1, 0.2f), new Color(0, 0, 0, 1));
+        // Handles.DrawSolidRectangleWithOutline(verts, Color.red,Color.green);
+        Handles.color = Color.green;
+        Vector3[] verts = { start, new Vector3(end.x, start.y, start.z), end, new Vector3(start.x, start.y, end.z), start };
+        Handles.DrawPolyLine(verts);
+
+       
+    }
+
+
+
     //根据左上格子的中心位置来绘制一定规格的矩形
     public static void DrawLines(Vector3 pos, Vector3 size, Color cl)
     {
