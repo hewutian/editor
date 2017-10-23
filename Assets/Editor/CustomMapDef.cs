@@ -31,6 +31,7 @@ public class CustomItemInfo //: ScriptableObject
     public int height;
     public bool isreachable;
     public string name = "";
+    public int id;
     //public GameObject prefab;
 
 }

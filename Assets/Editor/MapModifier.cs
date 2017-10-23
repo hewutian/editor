@@ -177,8 +177,11 @@ public class MapModifier
             cm.unreachable.Add(index);
         }
         CustomItemInfo newitem = new CustomItemInfo();
-       // newitem.type = itemtype;
+        // newitem.type = itemtype;
+        newitem.width = xlength;
+        newitem.height = zlength;
         newitem.lefttopsite = posindex;
+        newitem.name = ResourceCenter.Instance.prefabObjects[itemindex].name;
         //newitem.prefab = ResourceCenter.Instance.prefabObjects[itemindex];
         cm.itemlist.Add(newitem);
     }
@@ -192,6 +195,7 @@ public class MapModifier
 
     public void GenerateBaseData()
     {
+        ResourceCenter.Instance.Init("Assets/prefab/");
         mapsize = new Vector3();
         mapsize.x = cm.mapwidth / cm.unitlength;
         mapsize.y = 0;
@@ -294,13 +298,15 @@ public class MapModifier
         int rank = index % (cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
         int row = index / (cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
-        var centerpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
+        var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
+
         GameObject objTarget;
-        objTarget = ResourceCenter.Instance.objectDic[iteminfo.name];
+        objTarget = GameObject.Instantiate(ResourceCenter.Instance.objectDic[iteminfo.name]);
+        Vector3 centerpos = CaculateCreateGameObjectCenter(lefttopcenterpos, new Vector3(iteminfo.width, 1, iteminfo.height));
         //if (objTarget)
         //objTarget.transform.position = centerpos;
         objTarget.transform.position = new Vector3(centerpos.x, iteminfo.posy, centerpos.z);
-        cm.unreachable.Add(index);
+       // cm.unreachable.Add(index);
         //return centerpos;
     }
 

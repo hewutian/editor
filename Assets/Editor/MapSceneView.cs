@@ -40,16 +40,16 @@ public class MapSceneView
         }
     }
     //设置观察的摄像机位姿
-    public void CameraTop(GameObject o)
+    public void CameraTop(Vector3 center)
     {
         SceneView view = SceneView.lastActiveSceneView;
         if (view)
         {
             view.camera.orthographic = false;
             view.rotation = Quaternion.Euler(90f, 0f, 0f);
-            Vector3 newpos = o.transform.position;
+            //Vector3 newpos = o.transform.position;
             // newpos.z = -10;
-            view.pivot = o.transform.position;
+            view.pivot = center;//o.transform.position;
             view.size = 30f;
             view.orthographic = false;
         }
@@ -66,7 +66,7 @@ public class MapSceneView
         var re = sv.position;
         GUILayout.BeginArea(new Rect(0, re.height - 100, re.width, 100), EditorStyles.objectFieldThumb);//EditorStyles.toolbarButton);
         {
-            ResourceCenter.Instance.Init("Assets/prefab/");
+
             var objs = ResourceCenter.Instance.prefabObjects;
             var thumbs = ResourceCenter.Instance.thumbnails;
             GUIContent[] gc = new GUIContent[objs.Length];
