@@ -34,31 +34,69 @@ public static class CustomMap2DataPool {
         context += AddContent(--tab_count, "};\r\n");
 
         context += AddContent(tab_count, string.Format("prefabName={0}", "\""+cm.prefabName.ToString()+"\";\r\n"));
-        
+        context += AddContent(tab_count, string.Format("hasGeneratedData={0}", "\"" + (cm.hasGeneratedData ? 1 : 0).ToString() + "\";\r\n"));
+
         context += AddContent(tab_count++, "center{\r\n");
         context += AddContent(tab_count, string.Format("x={0}", "\""+cm.center.x.ToString()+"\";\r\n"));
         context += AddContent(tab_count, string.Format("y={0}", "\""+cm.center.y.ToString()+"\";\r\n"));
         context += AddContent(tab_count, string.Format("z={0}", "\""+cm.center.z.ToString()+"\";\r\n"));
-        context += AddContent(--tab_count, "};\r\n");
+        context += AddContent(--tab_count, "};\r\n");     
 
-        foreach(CustomItemInfo info in cm.itemlist)
+        foreach (CustomItemInfo info in cm.itemlist)
         {
             context += AddContent(tab_count++, "itemlist{\r\n");
-//            context += AddContent(tab_count, string.Format("type={0}", "\""+info.type.ToString()+"\";\r\n"));
             context += AddContent(tab_count, string.Format("posy={0}", "\""+info.posy.ToString()+"\";\r\n"));
             context += AddContent(tab_count, string.Format("lefttopsite={0}", "\""+info.lefttopsite.ToString()+"\";\r\n"));
             context += AddContent(tab_count, string.Format("width={0}", "\""+info.width.ToString()+"\";\r\n"));
             context += AddContent(tab_count, string.Format("height={0}", "\""+info.height.ToString()+"\";\r\n"));
             context += AddContent(tab_count, string.Format("isreachable={0}", "\""+(info.isreachable?1:0).ToString()+"\";\r\n"));
-            context += AddContent(tab_count++, "prefab{\r\n");
- //           context += AddContent(tab_count, string.Format("instanceID={0}", "\""+info.prefab.GetInstanceID().ToString()+"\";\r\n"));
-            context += AddContent(--tab_count, "};\r\n");
+            context += AddContent(tab_count, string.Format("name={0}", "\"" + info.name + "\";\r\n"));
+            context += AddContent(tab_count, string.Format("id={0}", "\"" + info.id.ToString() + "\";\r\n"));
             context += AddContent(--tab_count, "};\r\n");
         }
 
         foreach(int unreach in cm.unreachable)
         {
             context += AddContent(tab_count, string.Format("unreachable={0}", "\""+unreach.ToString()+"\";\r\n"));              
+        }
+
+        foreach (NodeInfo node in cm.designerNode)
+        {
+            context += AddContent(tab_count++, "designerNode{\r\n");
+
+            context += AddContent(tab_count, string.Format("id={0}", "\"" + node.id.ToString() + "\";\r\n"));
+
+            context += AddContent(tab_count++, "site{\r\n");
+            context += AddContent(tab_count, string.Format("x={0}", "\"" + node.site.x.ToString() + "\";\r\n"));
+            context += AddContent(tab_count, string.Format("y={0}", "\"" + node.site.y.ToString() + "\";\r\n"));
+            context += AddContent(tab_count, string.Format("z={0}", "\"" + node.site.z.ToString() + "\";\r\n"));
+            context += AddContent(--tab_count, "};\r\n");
+
+            context += AddContent(tab_count, string.Format("name={0}", "\"" + node.name + "\";\r\n"));
+
+            context += AddContent(--tab_count, "};\r\n");
+        }
+
+        foreach (AreaInfo area in cm.designerArea)
+        {
+            context += AddContent(tab_count++, "designerArea{\r\n");
+
+            context += AddContent(tab_count++, "start{\r\n");
+            context += AddContent(tab_count, string.Format("x={0}", "\"" + area.start.x.ToString() + "\";\r\n"));
+            context += AddContent(tab_count, string.Format("y={0}", "\"" + area.start.y.ToString() + "\";\r\n"));
+            context += AddContent(tab_count, string.Format("z={0}", "\"" + area.start.z.ToString() + "\";\r\n"));
+            context += AddContent(--tab_count, "};\r\n");
+
+            context += AddContent(tab_count++, "end{\r\n");
+            context += AddContent(tab_count, string.Format("x={0}", "\"" + area.end.x.ToString() + "\";\r\n"));
+            context += AddContent(tab_count, string.Format("y={0}", "\"" + area.end.y.ToString() + "\";\r\n"));
+            context += AddContent(tab_count, string.Format("z={0}", "\"" + area.end.z.ToString() + "\";\r\n"));
+            context += AddContent(--tab_count, "};\r\n");
+
+            context += AddContent(tab_count, string.Format("name={0}", "\"" + area.name + "\";\r\n"));
+            context += AddContent(tab_count, string.Format("name={0}", "\"" + area.id.ToString() + "\";\r\n"));
+
+            context += AddContent(--tab_count, "};\r\n");
         }
 
         context += AddContent(--tab_count, "};\r\n");
@@ -110,10 +148,10 @@ public static class CustomMap2DataPool {
         if (!Directory.Exists(DPath))
             Directory.CreateDirectory(DPath);
 
-        if (!File.Exists(DPath + "/mapdata.dpc"))
-            File.Delete(DPath + "/mapdata.dpc");
+        if (!File.Exists(DPath + "/MAPDATA.data.txt"))
+            File.Delete(DPath + "/MAPDATA.data.txt");
 
-        FileStream fstream = File.Create(DPath + "/mapdata.dpc");
+        FileStream fstream = File.Create(DPath + "/MAPDATA.data.txt");
 
         FileInfo[] allFiles = new DirectoryInfo(Application.dataPath).GetFiles("*.asset");
         string resultStream = "";
@@ -125,6 +163,7 @@ public static class CustomMap2DataPool {
                 if (temp != null)
                 {
                     resultStream += CustomMap2String(temp);
+                    Debug.Log(resultStream);
                 }
                 else
                 {

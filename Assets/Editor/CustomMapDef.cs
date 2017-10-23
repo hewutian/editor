@@ -41,7 +41,7 @@ public class NodeInfo//:ScriptableObject
 {
    // public e_NodeType type;
     public int  id;
-    public float posy;
+    //public float posy;
     public Vector3 site;
     public string name = "";
 }
