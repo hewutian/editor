@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System.IO;
 using System.Text;
 
@@ -100,5 +101,53 @@ public static class CustomMap2DataPool {
         }
         result += context_plus;
         return result;
+    }
+
+    [MenuItem("DataPool/Export File")]
+    public static bool GenerateDataPoolFile()
+    {
+        string DPath = Application.dataPath + "/DataPool";
+        if (!Directory.Exists(DPath))
+            Directory.CreateDirectory(DPath);
+
+        if (!File.Exists(DPath + "/mapdata.dpc"))
+            File.Delete(DPath + "/mapdata.dpc");
+
+        FileStream fstream = File.Create(DPath + "/mapdata.dpc");
+
+        FileInfo[] allFiles = new DirectoryInfo(Application.dataPath).GetFiles("*.asset");
+        string resultStream = "";
+        foreach (FileInfo file in allFiles)
+        {
+            if (file.Extension == ".asset")
+            {
+                CustomMap temp = AssetDatabase.LoadAssetAtPath<CustomMap>("Assets/" + file.Name);
+                if (temp != null)
+                {
+                    resultStream += CustomMap2String(temp);
+                }
+                else
+                {
+                    Debug.Log("Error Asset File");
+                }
+            }
+        }
+
+        try
+        {
+            char[] charData = resultStream.ToCharArray();
+            byte[] byteData = new byte[charData.Length];
+            Encoder e = Encoding.UTF8.GetEncoder();
+            e.GetBytes(charData, 0, charData.Length, byteData, 0, true);
+
+            fstream.Seek(0, SeekOrigin.Begin);
+            fstream.Write(byteData, 0, byteData.Length);
+        }
+        catch(IOException ex)
+        {
+            Debug.Log("IO Exception rised : " + ex.ToString());
+        }
+
+        return true;
     }
 }
