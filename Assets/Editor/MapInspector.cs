@@ -7,11 +7,28 @@ using UnityEditor;
 [CustomEditor(typeof(CustomMap))]
 public class MapInspector : Editor
 {
-       public string mapname = "test";
+    public string mapname = "test";
     public CustomMap cm;
     public static e_ItemType chooseType;
+    public SerializedProperty itemlist;
+    public SerializedProperty unreachable;
+    public SerializedProperty designerNode;
+    public SerializedProperty designerArea;
+
+    void OnEnable()
+    {
+        mapname = target.name;
+        //     itemlist = 
+        itemlist = serializedObject.FindProperty("itemlist");
+        unreachable = serializedObject.FindProperty("unreachable");
+        designerNode = serializedObject.FindProperty("designerNode");
+        designerArea = serializedObject.FindProperty("designerArea");
+
+    }
+
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
         GUILayout.Label(string.Format("this is a custom map :{0}", mapname));
         if (GUILayout.Button("GenerateBaseData"))
         {
@@ -90,9 +107,19 @@ public class MapInspector : Editor
         {
             CustomMap2DataPool.Convert2DataPool((CustomMap)target);
         }
+        if (GUILayout.Button("Save CustomMap designer data"))
+        {
+            MapModifier.Instance.Save();
+        }
+
         if (cm == null)
             cm = (CustomMap)target;
         MapModifier.Instance.SetCustomMap(cm);
+        //EditorGUILayout.PropertyField(unreachable);
+        //EditorGUILayout.PropertyField(itemlist);
+        //EditorGUILayout.PropertyField(designerNode);
+        //EditorGUILayout.PropertyField(designerArea);
+
         base.OnInspectorGUI();
      }
     //创建地图，并根据地图来生成不可达数据
@@ -141,8 +168,5 @@ public class MapInspector : Editor
     {
         return GameObject.FindObjectOfType<SceneMark>() != null;
     }
-     void OnEnable()
-    {
-        mapname = target.name;
-    }
+
 }

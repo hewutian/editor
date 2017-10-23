@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 public class MapModifier
@@ -135,11 +136,11 @@ public class MapModifier
         if (siteindex % (cm.mapwidth / cm.unitlength) + xlength > (cm.mapwidth / cm.unitlength))
             return true;
 
-        var unreachable = cm.unreachable;
+        //var unreachable = cm.unreachable;
         for (int i = 0; i < num; ++i)
         {
             int index = siteindex + (i / xlength) * cm.mapwidth / cm.unitlength + i % xlength;
-            if (unreachable.Contains(index))
+            if (cm.unreachable.Contains(index))
             {
                 return true;
             }
@@ -178,7 +179,7 @@ public class MapModifier
         CustomItemInfo newitem = new CustomItemInfo();
        // newitem.type = itemtype;
         newitem.lefttopsite = posindex;
-        newitem.prefab = ResourceCenter.Instance.prefabObjects[itemindex];
+        //newitem.prefab = ResourceCenter.Instance.prefabObjects[itemindex];
         cm.itemlist.Add(newitem);
     }
 
@@ -196,7 +197,7 @@ public class MapModifier
         mapsize.y = 0;
         mapsize.z = cm.mapheight / cm.unitlength;
         maplefttopcenter = new Vector3(cm.center.x - cm.mapwidth / 2.0f + cm.unitlength/2f, 0, cm.center.z + cm.mapheight / 2.0f - cm.unitlength/2f);
-        if(cm.hasGeneratedData == false)
+        if (cm.hasGeneratedData == false)
         {
             GenerateBaseUnreachableData();
             cm.hasGeneratedData = true;
@@ -272,8 +273,8 @@ public class MapModifier
     {
         foreach (var i in cm.itemlist)
         {
-            if (i != null)
-                i.posy = i.prefab.transform.position.y;
+           // if (i != null)
+                //i.posy = i.prefab.transform.position.y;
         }
     }
 
@@ -281,6 +282,7 @@ public class MapModifier
     {
         // SceneView.onSceneGUIDelegate -= OnSceneGUI;
         UpdateItemInfo();
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
