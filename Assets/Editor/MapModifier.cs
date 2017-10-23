@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 public class MapModifier
@@ -135,11 +136,11 @@ public class MapModifier
         if (siteindex % (cm.mapwidth / cm.unitlength) + xlength > (cm.mapwidth / cm.unitlength))
             return true;
 
-        var unreachable = cm.unreachable;
+        //var unreachable = cm.unreachable;
         for (int i = 0; i < num; ++i)
         {
             int index = siteindex + (i / xlength) * cm.mapwidth / cm.unitlength + i % xlength;
-            if (unreachable.Contains(index))
+            if (cm.unreachable.Contains(index))
             {
                 return true;
             }
@@ -176,9 +177,12 @@ public class MapModifier
             cm.unreachable.Add(index);
         }
         CustomItemInfo newitem = new CustomItemInfo();
-       // newitem.type = itemtype;
+        // newitem.type = itemtype;
+        newitem.width = xlength;
+        newitem.height = zlength;
         newitem.lefttopsite = posindex;
-        newitem.prefab = ResourceCenter.Instance.prefabObjects[itemindex];
+        newitem.name = ResourceCenter.Instance.prefabObjects[itemindex].name;
+        //newitem.prefab = ResourceCenter.Instance.prefabObjects[itemindex];
         cm.itemlist.Add(newitem);
     }
 
@@ -191,12 +195,13 @@ public class MapModifier
 
     public void GenerateBaseData()
     {
+        ResourceCenter.Instance.Init("Assets/prefab/");
         mapsize = new Vector3();
         mapsize.x = cm.mapwidth / cm.unitlength;
         mapsize.y = 0;
         mapsize.z = cm.mapheight / cm.unitlength;
         maplefttopcenter = new Vector3(cm.center.x - cm.mapwidth / 2.0f + cm.unitlength/2f, 0, cm.center.z + cm.mapheight / 2.0f - cm.unitlength/2f);
-        if(cm.hasGeneratedData == false)
+        if (cm.hasGeneratedData == false)
         {
             GenerateBaseUnreachableData();
             cm.hasGeneratedData = true;
@@ -272,8 +277,8 @@ public class MapModifier
     {
         foreach (var i in cm.itemlist)
         {
-            if (i != null)
-                i.posy = i.prefab.transform.position.y;
+           // if (i != null)
+                //i.posy = i.prefab.transform.position.y;
         }
     }
 
@@ -281,6 +286,7 @@ public class MapModifier
     {
         // SceneView.onSceneGUIDelegate -= OnSceneGUI;
         UpdateItemInfo();
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
@@ -292,13 +298,15 @@ public class MapModifier
         int rank = index % (cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
         int row = index / (cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
-        var centerpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
+        var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
+
         GameObject objTarget;
-        objTarget = ResourceCenter.Instance.objectDic[iteminfo.name];
+        objTarget = GameObject.Instantiate(ResourceCenter.Instance.objectDic[iteminfo.name]);
+        Vector3 centerpos = CaculateCreateGameObjectCenter(lefttopcenterpos, new Vector3(iteminfo.width, 1, iteminfo.height));
         //if (objTarget)
         //objTarget.transform.position = centerpos;
         objTarget.transform.position = new Vector3(centerpos.x, iteminfo.posy, centerpos.z);
-        cm.unreachable.Add(index);
+       // cm.unreachable.Add(index);
         //return centerpos;
     }
 

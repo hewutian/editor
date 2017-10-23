@@ -44,14 +44,14 @@ public static class CustomMap2DataPool {
         foreach(CustomItemInfo info in cm.itemlist)
         {
             context += AddContent(tab_count++, "itemlist{\r\n");
-            context += AddContent(tab_count, string.Format("type={0}", "\""+info.type.ToString()+"\";\r\n"));
+//            context += AddContent(tab_count, string.Format("type={0}", "\""+info.type.ToString()+"\";\r\n"));
             context += AddContent(tab_count, string.Format("posy={0}", "\""+info.posy.ToString()+"\";\r\n"));
             context += AddContent(tab_count, string.Format("lefttopsite={0}", "\""+info.lefttopsite.ToString()+"\";\r\n"));
             context += AddContent(tab_count, string.Format("width={0}", "\""+info.width.ToString()+"\";\r\n"));
             context += AddContent(tab_count, string.Format("height={0}", "\""+info.height.ToString()+"\";\r\n"));
             context += AddContent(tab_count, string.Format("isreachable={0}", "\""+(info.isreachable?1:0).ToString()+"\";\r\n"));
             context += AddContent(tab_count++, "prefab{\r\n");
-            context += AddContent(tab_count, string.Format("instanceID={0}", "\""+info.prefab.GetInstanceID().ToString()+"\";\r\n"));
+ //           context += AddContent(tab_count, string.Format("instanceID={0}", "\""+info.prefab.GetInstanceID().ToString()+"\";\r\n"));
             context += AddContent(--tab_count, "};\r\n");
             context += AddContent(--tab_count, "};\r\n");
         }

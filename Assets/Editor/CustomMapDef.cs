@@ -22,35 +22,39 @@ public enum e_AreaType
 }
 
 [System.Serializable]
-public class CustomItemInfo : ScriptableObject
+public class CustomItemInfo //: ScriptableObject
 {
-    public e_ItemType type;
-
+   // public e_ItemType type;
     public float posy;
-
     public int lefttopsite;
     public int width;
     public int height;
     public bool isreachable;
-    public GameObject prefab;
+    public string name = "";
+    public int id;
+    //public GameObject prefab;
+
 }
 
 [System.Serializable]
-public class NodeInfo:ScriptableObject
+public class NodeInfo//:ScriptableObject
 {
-    public e_NodeType type;
-    public int mapIndex;
+   // public e_NodeType type;
+    public int  id;
     public float posy;
     public Vector3 site;
+    public string name = "";
 }
 
 [System.Serializable]
-public class AreaInfo:ScriptableObject
+public class AreaInfo//:ScriptableObject
 {
-    public e_AreaType type;
-    public int width;
-    public int height;
-    public int lefttopindex;
+   // public e_AreaType type;
+   // public int width;
+    //public int height;
+   // public int lefttopindex;
     public Vector3 start;
     public Vector3 end;
+    public string name = "";
+    public int id;
 }
