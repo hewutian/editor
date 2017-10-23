@@ -1,0 +1,1 @@
+dpc /I main.txt /D mapdata.dpc
