@@ -148,7 +148,7 @@ public class MapModifier
         return false;
     }
     
-    void CreateGameObject(Vector3 center, int index)
+   public  void CreateGameObject(Vector3 center, int index)
     {
         GameObject objTarget;
         objTarget = GameObject.Instantiate(ResourceCenter.Instance.prefabObjects[index]);
@@ -190,6 +190,32 @@ public class MapModifier
     {
         CreateGameObject(center, itemindex);
         Debug.Log("mouse click");
+    }
+
+    public  void AddObject(CustomItemInfo iteminfo)
+    {
+        int index = iteminfo.lefttopsite;
+        Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
+        int rank = index % (cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
+        int row = index / (cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
+        // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
+        var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
+        GameObject objTarget;
+        objTarget = GameObject.Instantiate(ResourceCenter.Instance.objectDic[iteminfo.name]);
+        Vector3 centerpos = CaculateCreateGameObjectCenter(lefttopcenterpos, new Vector3(iteminfo.width, 1, iteminfo.height));
+        //if (objTarget)
+        //objTarget.transform.position = centerpos;
+        if (objTarget)
+        {
+            objTarget.transform.position = new Vector3(centerpos.x, iteminfo.posy, centerpos.z);
+            objTarget.transform.parent = GameObject.FindObjectOfType<SceneMark>().gameObject.transform;
+
+            if (objTarget.GetComponent<ItemMark>() == null)
+            {
+                ItemMark itemMark = objTarget.AddComponent<ItemMark>();
+                itemMark.sceneMark = GameObject.FindObjectOfType<SceneMark>();
+            }
+        }
     }
 
 

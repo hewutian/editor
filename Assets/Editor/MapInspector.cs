@@ -186,7 +186,8 @@ public class MapInspector : Editor
         foreach(var e in cm.itemlist)
         {
             if (e != null)
-                MapModifier.Instance.CreateGameObjectAndAddUnreachable(e);
+                MapModifier.Instance.AddObject(e);
+                //MapModifier.Instance.CreateGameObjectAndAddUnreachable(e);
         }
     }
     private bool existCustomMapBeGenerated()
