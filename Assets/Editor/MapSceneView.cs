@@ -178,6 +178,7 @@ public class MapSceneView
     void SceneGuiDelegateSecond(SceneView sv)
     {
         SecondStageGuiTool(sv);
+        MapModifier.Instance.ShowGameObjectIndexInfo();
         DealWithGUIEventSecondStage();
     }
     //处理gui事件
@@ -250,6 +251,7 @@ public class MapSceneView
         //}
         MapModifier.Instance.ShowAreaFreeMoveHandles();
         MapModifier.Instance.ShowPointFreeMoveHandles();
+        
         //Handles.color = Color.yellow;
         //foreach (var e in cm.designerNode)
         //{
