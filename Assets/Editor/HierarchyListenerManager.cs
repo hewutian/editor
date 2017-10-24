@@ -32,7 +32,8 @@ public class NewBehaviourScript : HierarchyListener
             else
             {
                 toDelete.Add(dic.Key);
-                MapSceneView.Instance.SetMapDesignStage(0);
+                //MapSceneView.Instance.SetMapDesignStage(0);
+                MapSceneView.Instance.ShowMainEditPage();
             }
         }
 

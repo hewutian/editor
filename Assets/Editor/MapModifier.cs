@@ -421,4 +421,6 @@ public class MapModifier
             //  objTarget.transform.position = new Vector3(centerpos.x, e.posy, centerpos.z);
         }
     }
+
+   
 }
