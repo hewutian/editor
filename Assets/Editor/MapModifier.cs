@@ -306,7 +306,10 @@ public class MapModifier
         //if (objTarget)
         //objTarget.transform.position = centerpos;
         objTarget.transform.position = new Vector3(centerpos.x, iteminfo.posy, centerpos.z);
-       // cm.unreachable.Add(index);
+        //var newstyle = new GUIStyle();
+        //newstyle.fontSize = 10;
+        //Handles.Label(centerpos, iteminfo.id.ToString(), newstyle);
+        // cm.unreachable.Add(index);
         //return centerpos;
     }
 
@@ -368,22 +371,56 @@ public class MapModifier
 
     public void ShowAreaFreeMoveHandles()
     {
-        Handles.color = Color.green;
+       
         foreach( var e in cm.designerArea)
         {
+            Handles.color = Color.green;
             e.start = Handles.FreeMoveHandle(e.start, Quaternion.identity, .5f, Vector3.zero, Handles.CubeHandleCap);
             e.end = Handles.FreeMoveHandle(e.end, Quaternion.identity, .5f, Vector3.zero, Handles.CubeHandleCap);
             MapAux.DrawRectHandles(e.start, e.end);
+            var newstyle = new GUIStyle();
+            newstyle.fontSize = 10;
+             Handles.Label((e.start + e.end) / 2, e.id.ToString(),newstyle);
         }
     }
 
     public void ShowPointFreeMoveHandles()
     {
-        Handles.color = Color.green;
+       
         foreach (var e in cm.designerNode)
         {
+            Handles.color = Color.green;
             e.site = Handles.FreeMoveHandle(e.site, Quaternion.identity, .25f, Vector3.zero, Handles.SphereHandleCap);
             Handles.DrawWireDisc(e.site, Vector3.up, .5f);
+            var newstyle = new GUIStyle();
+            newstyle.fontSize = 10;
+            Handles.Label(e.site, e.id.ToString(),newstyle);
         }
     }
+
+    public void ShowGameObjectIndexInfo()
+    {
+        foreach(var e in cm.itemlist)
+        {
+            int index = e.lefttopsite;
+            Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
+            int rank = index % (cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
+            int row = index / (cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
+                                                                // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
+            var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
+
+           // GameObject objTarget;
+           // objTarget = GameObject.Instantiate(ResourceCenter.Instance.objectDic[e.name]);
+            Vector3 centerpos = CaculateCreateGameObjectCenter(lefttopcenterpos, new Vector3(e.width, 1, e.height));
+            var newstyle = new GUIStyle();
+            newstyle.fontSize = 10;
+            Handles.Label(centerpos, e.id.ToString(), newstyle);
+
+            //if (objTarget)
+            //objTarget.transform.position = centerpos;
+            //  objTarget.transform.position = new Vector3(centerpos.x, e.posy, centerpos.z);
+        }
+    }
+
+   
 }

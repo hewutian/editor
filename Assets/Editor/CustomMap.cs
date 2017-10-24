@@ -13,15 +13,17 @@ public class CustomMap : ScriptableObject
     public Vector3 dir;
     public float max = 5;
     public GameObject scene;
-    public string prefabName;
     public bool hasGeneratedData = false;
     public Vector3 center;
-    [SerializeField]
-    public List<CustomItemInfo> itemlist = new List<CustomItemInfo>(1);
+    public string prefabName;
+    public int id;
+
     [SerializeField]
     public List<int> unreachable = new List<int>();
     [SerializeField]
      public List<NodeInfo> designerNode = new List<NodeInfo>();
     [SerializeField]
     public List<AreaInfo> designerArea = new List<AreaInfo>();
+    [SerializeField]
+    public List<CustomItemInfo> itemlist = new List<CustomItemInfo>();
 }
