@@ -115,10 +115,10 @@ public class MapInspector : Editor
         //        CustomMapJsonMgr.JsonToMapData((CustomMap)target, file_name);
         //    }
         //}
-        if (GUILayout.Button("导出数据到TXT"))
-        {
-            CustomMap2DataPool.Convert2DataPool((CustomMap)target);
-        }
+        // if (GUILayout.Button("导出数据到TXT"))
+        // {
+        //     CustomMap2DataPool.Convert2DataPool((CustomMap)target);
+        // }
         //if (GUILayout.Button("Save CustomMap designer data"))
         //{
         //    MapModifier.Instance.Save();
