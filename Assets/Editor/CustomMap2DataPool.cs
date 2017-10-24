@@ -4,103 +4,24 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Text;
+using System.Reflection;
 
 public static class CustomMap2DataPool {
     private static string CustomMap2String(CustomMap cm)
     {
-        string context = "";
-        int tab_count = 0;
+        string result = "";
+        int count = 0;
+        result += AddContent(count++, "\r\nmapdata{\r\n");
 
-        //头部
-        context += AddContent(tab_count, "\r\n");
-        context += AddContent(tab_count++, "mapdata{\r\n");
-
-        context += AddContent(tab_count, string.Format("mapwidth={0}", "\""+cm.mapwidth.ToString()+"\";\r\n"));
-        context += AddContent(tab_count, string.Format("mapheight={0}", "\""+cm.mapheight.ToString()+"\";\r\n"));
-        context += AddContent(tab_count, string.Format("unitlength={0}", "\""+cm.unitlength.ToString()+"\";\r\n"));
-        context += AddContent(tab_count, string.Format("paintedgridlength={0}", "\""+cm.paintedgridlength.ToString()+"\";\r\n"));
-        context += AddContent(tab_count, string.Format("tilelength={0}", "\""+cm.tilelength.ToString()+"\";\r\n"));
-
-        context += AddContent(tab_count++, "dir{\r\n");
-        context += AddContent(tab_count, string.Format("x={0}", "\""+cm.dir.x.ToString()+"\";\r\n"));
-        context += AddContent(tab_count, string.Format("y={0}", "\""+cm.dir.y.ToString()+"\";\r\n"));
-        context += AddContent(tab_count, string.Format("z={0}", "\""+cm.dir.z.ToString()+"\";\r\n"));
-        context += AddContent(--tab_count, "};\r\n");
-
-        context += AddContent(tab_count, string.Format("max={0}", "\""+cm.max.ToString()+"\";\r\n"));
-
-        context += AddContent(tab_count++, "scene{\r\n");
-        context += AddContent(tab_count, string.Format("instanceID={0}", "\""+cm.scene.GetInstanceID().ToString()+"\";\r\n"));
-        context += AddContent(--tab_count, "};\r\n");
-
-        context += AddContent(tab_count, string.Format("prefabName={0}", "\""+cm.prefabName.ToString()+"\";\r\n"));
-        context += AddContent(tab_count, string.Format("hasGeneratedData={0}", "\"" + (cm.hasGeneratedData ? 1 : 0).ToString() + "\";\r\n"));
-
-        context += AddContent(tab_count++, "center{\r\n");
-        context += AddContent(tab_count, string.Format("x={0}", "\""+cm.center.x.ToString()+"\";\r\n"));
-        context += AddContent(tab_count, string.Format("y={0}", "\""+cm.center.y.ToString()+"\";\r\n"));
-        context += AddContent(tab_count, string.Format("z={0}", "\""+cm.center.z.ToString()+"\";\r\n"));
-        context += AddContent(--tab_count, "};\r\n");     
-
-        foreach (CustomItemInfo info in cm.itemlist)
+        FieldInfo[] fieldInfos = cm.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
+        foreach (FieldInfo info in fieldInfos)
         {
-            context += AddContent(tab_count++, "itemlist{\r\n");
-            context += AddContent(tab_count, string.Format("posy={0}", "\""+info.posy.ToString()+"\";\r\n"));
-            context += AddContent(tab_count, string.Format("lefttopsite={0}", "\""+info.lefttopsite.ToString()+"\";\r\n"));
-            context += AddContent(tab_count, string.Format("width={0}", "\""+info.width.ToString()+"\";\r\n"));
-            context += AddContent(tab_count, string.Format("height={0}", "\""+info.height.ToString()+"\";\r\n"));
-            context += AddContent(tab_count, string.Format("isreachable={0}", "\""+(info.isreachable?1:0).ToString()+"\";\r\n"));
-            context += AddContent(tab_count, string.Format("name={0}", "\"" + info.name + "\";\r\n"));
-            context += AddContent(tab_count, string.Format("id={0}", "\"" + info.id.ToString() + "\";\r\n"));
-            context += AddContent(--tab_count, "};\r\n");
+            Convert2String(info.GetValue(cm), ref result, ref count, info);
         }
 
-        foreach(int unreach in cm.unreachable)
-        {
-            context += AddContent(tab_count, string.Format("unreachable={0}", "\""+unreach.ToString()+"\";\r\n"));              
-        }
-
-        foreach (NodeInfo node in cm.designerNode)
-        {
-            context += AddContent(tab_count++, "designerNode{\r\n");
-
-            context += AddContent(tab_count, string.Format("id={0}", "\"" + node.id.ToString() + "\";\r\n"));
-
-            context += AddContent(tab_count++, "site{\r\n");
-            context += AddContent(tab_count, string.Format("x={0}", "\"" + node.site.x.ToString() + "\";\r\n"));
-            context += AddContent(tab_count, string.Format("y={0}", "\"" + node.site.y.ToString() + "\";\r\n"));
-            context += AddContent(tab_count, string.Format("z={0}", "\"" + node.site.z.ToString() + "\";\r\n"));
-            context += AddContent(--tab_count, "};\r\n");
-
-            context += AddContent(tab_count, string.Format("name={0}", "\"" + node.name + "\";\r\n"));
-
-            context += AddContent(--tab_count, "};\r\n");
-        }
-
-        foreach (AreaInfo area in cm.designerArea)
-        {
-            context += AddContent(tab_count++, "designerArea{\r\n");
-
-            context += AddContent(tab_count++, "start{\r\n");
-            context += AddContent(tab_count, string.Format("x={0}", "\"" + area.start.x.ToString() + "\";\r\n"));
-            context += AddContent(tab_count, string.Format("y={0}", "\"" + area.start.y.ToString() + "\";\r\n"));
-            context += AddContent(tab_count, string.Format("z={0}", "\"" + area.start.z.ToString() + "\";\r\n"));
-            context += AddContent(--tab_count, "};\r\n");
-
-            context += AddContent(tab_count++, "end{\r\n");
-            context += AddContent(tab_count, string.Format("x={0}", "\"" + area.end.x.ToString() + "\";\r\n"));
-            context += AddContent(tab_count, string.Format("y={0}", "\"" + area.end.y.ToString() + "\";\r\n"));
-            context += AddContent(tab_count, string.Format("z={0}", "\"" + area.end.z.ToString() + "\";\r\n"));
-            context += AddContent(--tab_count, "};\r\n");
-
-            context += AddContent(tab_count, string.Format("name={0}", "\"" + area.name + "\";\r\n"));
-            context += AddContent(tab_count, string.Format("name={0}", "\"" + area.id.ToString() + "\";\r\n"));
-
-            context += AddContent(--tab_count, "};\r\n");
-        }
-
-        context += AddContent(--tab_count, "};\r\n");
-        return context;
+        result += AddContent(--count, "};\r\n");
+        Debug.Log(result);
+        return result;
     }
 
     public static void Convert2DataPool(CustomMap cm)
@@ -128,6 +49,39 @@ public static class CustomMap2DataPool {
         {
             Debug.Log("IO Exception rised : " + ex.ToString());
         }
+    }
+
+    private static void Convert2String(object data, ref string result, ref int count, FieldInfo field)
+    {
+        if (data is GameObject)
+            return;
+
+        if (data is ICollection && data is IList)
+        {
+            for (int i = 0; i < (data as IList).Count; i++)
+            {
+                Convert2String((data as IList)[i], ref result, ref count, field);
+            }
+            return;
+        }
+
+        if ((data.GetType().IsClass && !(data is string)) || data is Vector3)
+        {
+            result += AddContent(count++, field.Name + "{\r\n");
+            FieldInfo[] fieldInfos = data.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+            foreach (FieldInfo info in fieldInfos)
+            {
+                Convert2String(info.GetValue(data), ref result, ref count, info);
+            }
+            result += AddContent(--count, "};\r\n");
+            return;
+        }
+
+        string details = data.ToString();
+        if (data is bool)
+            details = (bool)data ? "1" : "0";
+
+        result += AddContent(count, string.Format("{0}=\"{1}\";\r\n", field.Name, details));
     }
 
     private static string AddContent(int tab_count, string context_plus)
@@ -163,7 +117,7 @@ public static class CustomMap2DataPool {
                 if (temp != null)
                 {
                     resultStream += CustomMap2String(temp);
-                    Debug.Log(resultStream);
+                    //Debug.Log(resultStream);
                 }
                 else
                 {
