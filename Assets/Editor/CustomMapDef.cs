@@ -40,10 +40,10 @@ public class CustomItemInfo //: ScriptableObject
 public class NodeInfo//:ScriptableObject
 {
    // public e_NodeType type;
-    public int  id;
     //public float posy;
     public Vector3 site;
     public string name = "";
+    public int id;
 }
 
 [System.Serializable]
