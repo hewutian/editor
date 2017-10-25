@@ -51,7 +51,7 @@ public class NewBehaviourScript : HierarchyListener
 
     public override void OnGlobalEventHandler(Event e)
     {
-        //Debug.Log ("全局事件回调: " + e);
+        Debug.Log("全局事件回调: " + e);
     }
 
     public override void HierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
@@ -77,7 +77,8 @@ public class NewBehaviourScript : HierarchyListener
 
     public override void OnModifierKeysChanged()
     {
-        //	Debug.Log ("当触发键盘事件");
+        Debug.Log("当触发键盘事件");
+        
     }
 
     public override void OnProjectWindowChanged()

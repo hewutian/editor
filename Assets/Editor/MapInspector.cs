@@ -126,6 +126,7 @@ public class MapInspector : Editor
         if (GUILayout.Button("编辑页面"))
         {
             MapSceneView.Instance.ShowMainEditPage();
+            SceneView.RepaintAll();
         }
         if (cm == null)
             cm = (CustomMap)target;
