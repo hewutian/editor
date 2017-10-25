@@ -64,10 +64,12 @@ public class MapSceneView
         }
         GUILayout.EndArea();
         Handles.EndGUI();
-        if(curhandler != null)
+        HandleUtility.Repaint();
+        if (curhandler != null)
         {
             curhandler.ShowAuxInfo();
             curhandler.DealWithEvent();
         }
+
      }
 }
