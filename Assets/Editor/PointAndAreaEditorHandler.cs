@@ -43,7 +43,7 @@ public class PointAndAreaEditorHandler : EditorHandler
         var flag = MapModifier.Instance.CheckContainUnreachable(lefttopindex, size);
         Handles.color = Color.green;
         Handles.DrawWireDisc(collisionPos, Vector3.up, .5f);
-        Debug.Log(current.type);
+        //Debug.Log(current.type);
         if (isDrag == true)
         {
             MapAux.DrawRectHandles(startpoint, endpoint);
@@ -81,6 +81,19 @@ public class PointAndAreaEditorHandler : EditorHandler
                 default:
                     break;
             }
+        }
+        else
+        {
+            Debug.Log(GUIUtility.hotControl);
+            Handles.BeginGUI();
+
+            if (cm.designerArea.Count > 0)
+            {
+                var tmp = cm.designerArea[0];
+                var m_fields = ExposeProperties.GetProperties(tmp);
+                ExposeProperties.Expose(m_fields);
+             }
+            Handles.EndGUI();
         }
         SceneView.RepaintAll();
     }

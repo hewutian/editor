@@ -51,7 +51,7 @@ public class MapDesignerWindow : EditorWindow {
 
      void Update()
     {
-        Debug.Log("window");
+        //Debug.Log("window");
     }
 
      void OnGUI()
@@ -109,7 +109,7 @@ public class MapDesignerWindow : EditorWindow {
     void AddObject()
 
     {
-        Debug.Log("mouse click");
+       // Debug.Log("mouse click");
     }
 
     public static void Save()

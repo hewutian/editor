@@ -7,7 +7,7 @@ public class MapModifier
 {
     CustomMap cm;
     Vector3 mapsize;
-
+    Dictionary<int, object> handleIDAndTarget = new Dictionary<int, object>();
     [SerializeField]
     Vector3 maplefttopcenter;
      static MapModifier instance;
@@ -112,7 +112,7 @@ public class MapModifier
         int row = (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var indexUnitpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, pos.y, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
-         Debug.Log(indexUnitpos + "-------indexUnitpos");
+       //  Debug.Log(indexUnitpos + "-------indexUnitpos");
         return indexUnitpos;
     }
     //根据位置来求对应的在地图中的小格子索引
@@ -122,7 +122,7 @@ public class MapModifier
         int rank = (int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
         int row = (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank - 1);
-        Debug.Log(index + "----index");
+       // Debug.Log(index + "----index");
         return index;
     }
     //根据左上索引和轮廓来看是否包含了不可达的位置
@@ -189,7 +189,7 @@ public class MapModifier
     public void AddObject(int posindex, Vector3 center,int itemindex)
     {
         CreateGameObject(center, itemindex);
-        Debug.Log("mouse click");
+        //Debug.Log("mouse click");
     }
 
     public  void AddObject(CustomItemInfo iteminfo)
@@ -266,7 +266,7 @@ public class MapModifier
             }
             else
             {
-                Debug.Log(hit.point);
+               // Debug.Log(hit.point);
             }
         }
         return flag;
@@ -402,11 +402,13 @@ public class MapModifier
         {
             Handles.color = Color.green;
             e.start = Handles.FreeMoveHandle(e.start, Quaternion.identity, .5f, Vector3.zero, Handles.CubeHandleCap);
+            
             e.end = Handles.FreeMoveHandle(e.end, Quaternion.identity, .5f, Vector3.zero, Handles.CubeHandleCap);
             MapAux.DrawRectHandles(e.start, e.end);
             var newstyle = new GUIStyle();
             newstyle.fontSize = 10;
              Handles.Label((e.start + e.end) / 2, e.id.ToString(),newstyle);
+
         }
     }
 

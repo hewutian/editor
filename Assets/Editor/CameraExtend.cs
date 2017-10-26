@@ -39,6 +39,6 @@ public class CameraExtend : Editor
     void AddObject()
 
     {
-        Debug.Log("mouse click");
+        //Debug.Log("mouse click");
     }
 }
