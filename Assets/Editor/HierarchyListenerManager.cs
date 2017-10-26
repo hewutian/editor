@@ -6,11 +6,15 @@ using System.Collections.Generic;
 
 public class NewBehaviourScript : HierarchyListener
 {
+    public delegate void GlobalEventHandle(Event e);
+
     public static Dictionary<int, GameObject> gameDict = new Dictionary<int, GameObject>();
     public static List<int> instanceIDArray = new List<int>();
+    private static event GlobalEventHandle gEvent;
 
     public override void Update()
     {
+        //Debug.Log(MapEditorFSM.Instance.curState);
         //只在Editor下处理
 #if UNITY_EDITOR
         //Debug.Log ("每一帧回调一次");
@@ -51,7 +55,9 @@ public class NewBehaviourScript : HierarchyListener
 
     public override void OnGlobalEventHandler(Event e)
     {
-        Debug.Log("全局事件回调: " + e);
+        // Debug.Log("全局事件回调: " + e);
+        if (gEvent != null)
+            gEvent(e);
     }
 
     public override void HierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
@@ -77,8 +83,7 @@ public class NewBehaviourScript : HierarchyListener
 
     public override void OnModifierKeysChanged()
     {
-        Debug.Log("当触发键盘事件");
-        
+        // Debug.Log("当触发键盘事件");
     }
 
     public override void OnProjectWindowChanged()
@@ -90,5 +95,22 @@ public class NewBehaviourScript : HierarchyListener
     {
         //根据GUID得到资源的准确路径
         //Debug.Log (string.Format ("{0} : {1} - {2}", AssetDatabase.GUIDToAssetPath (guid), guid, selectionRect));
+    }
+
+    public static void AddGlobalEvent(GlobalEventHandle handle)
+    {
+        gEvent -= handle;//确保相同委托只有一个
+        gEvent += handle;
+    }
+
+    public static void RemoveGlobalEvent(GlobalEventHandle handle)
+    {
+        gEvent -= handle;
+    }
+
+    [InitializeOnLoadMethod]
+    public static void Test()
+    {
+        //AddGlobalEvent((e) => Debug.Log(e));
     }
 }

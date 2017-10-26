@@ -125,6 +125,7 @@ public class MapInspector : Editor
         //}
         if (GUILayout.Button("编辑页面"))
         {
+            MapEditorFSM.Instance.curState |= e_Editor_State.Edit_Map;
             MapSceneView.Instance.ShowMainEditPage();
             SceneView.RepaintAll();
         }
