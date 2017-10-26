@@ -12,7 +12,10 @@ public class CustomMap : ScriptableObject
     public int tilelength;
     public Vector3 dir;
     public float max = 5;
+
+    [DPCIgnore]
     public GameObject scene;
+
     public bool hasGeneratedData = false;
     public Vector3 center;
     public string prefabName;

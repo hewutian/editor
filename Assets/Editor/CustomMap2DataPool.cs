@@ -5,6 +5,7 @@ using UnityEditor;
 using System.IO;
 using System.Text;
 using System.Reflection;
+using System;
 
 public static class CustomMap2DataPool {
     private static string CustomMap2String(CustomMap cm)
@@ -24,37 +25,12 @@ public static class CustomMap2DataPool {
         return result;
     }
 
-    public static void Convert2DataPool(CustomMap cm)
-    {
-        string DPath = Application.dataPath + "/DataPool";
-        if (!Directory.Exists(DPath))
-            Directory.CreateDirectory(DPath);
-
-        try
-        {
-            FileStream fstream = File.Open(DPath + "/MAPDATA.data.txt", FileMode.OpenOrCreate);
-            string context = CustomMap2String(cm);
-
-            char[] charData = context.ToCharArray();
-            byte[] byteData = new byte[charData.Length];
-            Encoder e = Encoding.UTF8.GetEncoder();
-            e.GetBytes(charData, 0, charData.Length, byteData, 0, true);
-
-            fstream.Seek(0, SeekOrigin.End);
-            fstream.Write(byteData, 0, byteData.Length);
-            //Debug.Log(byteData.Length);
-            //Debug.Log(context);
-        }
-        catch (IOException ex)
-        {
-            Debug.Log("IO Exception rised : " + ex.ToString());
-        }
-    }
-
     private static void Convert2String(object data, ref string result, ref int count, FieldInfo field)
     {
-        if (data is GameObject)
+        if (Attribute.GetCustomAttribute(field, typeof(DPCIgnoreAttribute)) != null)
+        {
             return;
+        }
 
         if (data is ICollection && data is IList)
         {
