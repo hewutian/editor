@@ -40,6 +40,7 @@ public class MapSceneView
     public void OriginalSceneDelegate()
     {
         SceneView.onSceneGUIDelegate -= MainPage;
+        MapEditorFSM.Instance.curState = e_Editor_State.Unwork;
     }
     
     void MainPage(SceneView sv)
