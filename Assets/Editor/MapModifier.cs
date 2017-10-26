@@ -7,7 +7,8 @@ public class MapModifier
 {
     CustomMap cm;
     Vector3 mapsize;
-    Dictionary<int, object> handleIDAndTarget = new Dictionary<int, object>();
+    
+    //int curControlID;
     [SerializeField]
     Vector3 maplefttopcenter;
      static MapModifier instance;
@@ -232,6 +233,7 @@ public class MapModifier
             GenerateBaseUnreachableData();
             cm.hasGeneratedData = true;
         }
+        HandleRecorder.handleIDAndTarget.Clear();
     }
     //检测不可达点
     List<int> Detect(List<Vector3> pos, Vector3 dir, float max)
@@ -401,9 +403,12 @@ public class MapModifier
         foreach( var e in cm.designerArea)
         {
             Handles.color = Color.green;
-            e.start = Handles.FreeMoveHandle(e.start, Quaternion.identity, .5f, Vector3.zero, Handles.CubeHandleCap);
-            
-            e.end = Handles.FreeMoveHandle(e.end, Quaternion.identity, .5f, Vector3.zero, Handles.CubeHandleCap);
+            Handles.CapFunction customfunc = Handles.CubeHandleCap;
+            customfunc += HandleRecorder.RecordHandles;
+            e.start = Handles.FreeMoveHandle(e.start, Quaternion.identity, .5f, Vector3.zero, customfunc);
+            HandleRecorder.CheckID(e);
+            e.end = Handles.FreeMoveHandle(e.end, Quaternion.identity, .5f, Vector3.zero, customfunc);
+            HandleRecorder.CheckID(e);
             MapAux.DrawRectHandles(e.start, e.end);
             var newstyle = new GUIStyle();
             newstyle.fontSize = 10;
@@ -418,7 +423,10 @@ public class MapModifier
         foreach (var e in cm.designerNode)
         {
             Handles.color = Color.green;
-            e.site = Handles.FreeMoveHandle(e.site, Quaternion.identity, .25f, Vector3.zero, Handles.SphereHandleCap);
+            Handles.CapFunction customfunc = Handles.SphereHandleCap;
+            customfunc += HandleRecorder.RecordHandles;
+            e.site = Handles.FreeMoveHandle(e.site, Quaternion.identity, .25f, Vector3.zero, customfunc);
+            HandleRecorder.CheckID(e);
             Handles.DrawWireDisc(e.site, Vector3.up, .5f);
             var newstyle = new GUIStyle();
             newstyle.fontSize = 10;
@@ -450,5 +458,5 @@ public class MapModifier
         }
     }
 
-   
+    
 }

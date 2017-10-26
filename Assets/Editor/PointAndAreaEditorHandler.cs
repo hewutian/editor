@@ -8,6 +8,7 @@ public class PointAndAreaEditorHandler : EditorHandler
     Vector3 startpoint;
     Vector3 endpoint;
     bool isDrag = false;
+    int curFocusID = 0;
     public override void ShowAuxInfo()
     {
         Vector3 mapsize = MapModifier.Instance.MapSize;
@@ -84,16 +85,19 @@ public class PointAndAreaEditorHandler : EditorHandler
         }
         else
         {
-            Debug.Log(GUIUtility.hotControl);
-            Handles.BeginGUI();
 
-            if (cm.designerArea.Count > 0)
+            int curID = GUIUtility.hotControl;
+            if (HandleRecorder.handleIDAndTarget.ContainsKey(curID))
             {
-                var tmp = cm.designerArea[0];
-                var m_fields = ExposeProperties.GetProperties(tmp);
+                curFocusID = curID;
+            }
+            if (HandleRecorder.handleIDAndTarget.ContainsKey(curFocusID))
+            {
+                Handles.BeginGUI();
+                var m_fields = ExposeProperties.GetProperties(HandleRecorder.handleIDAndTarget[curFocusID]);
                 ExposeProperties.Expose(m_fields);
-             }
-            Handles.EndGUI();
+                Handles.EndGUI();
+            }
         }
         SceneView.RepaintAll();
     }
