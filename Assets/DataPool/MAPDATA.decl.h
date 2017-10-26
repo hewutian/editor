@@ -7,13 +7,9 @@ struct Vector3
 
 struct CustomItemInfo
 {
-    float posy;
+   
     int lefttopsite;
-    int width;
-    int height;
-    int isreachable;
-	string name;
-	int id;
+	int tid;
 };
 
 struct NodeInfo
@@ -37,12 +33,8 @@ struct MAPDATA
     int mapheight;
     int unitlength;
     int paintedgridlength;
-    int tilelength;
-    Vector3 dir;
-    float max;
     string prefabName;
-	int id;
-    int hasGeneratedData;
+	int tid;
     Vector3 center;
 
     //CustomItemInfo[] itemList = new CustomItemInfo[0];
