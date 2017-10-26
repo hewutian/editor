@@ -5,20 +5,15 @@ struct Vector3
 	float z;
 };
 
-struct GameObject
-{
-	int instanceID;
-};
-
 struct CustomItemInfo
 {
-	int type;
     float posy;
     int lefttopsite;
     int width;
     int height;
     int isreachable;
-    GameObject prefab;
+	string name;
+	int id;
 };
 
 struct NodeInfo
@@ -45,8 +40,8 @@ struct MAPDATA
     int tilelength;
     Vector3 dir;
     float max;
-    GameObject scene;
     string prefabName;
+	int id;
     int hasGeneratedData;
     Vector3 center;
 

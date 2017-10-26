@@ -51,11 +51,20 @@ public class MapSceneView
         {
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("寻路小格"))
+            {
+                MapEditorFSM.Instance.curState = e_Editor_State.Edit_Map | e_Editor_State.Edit_Pathfind_Cell;
                 curhandler = new CellEditorHandler(MapModifier.Instance.CurMap);
+            }
             if (GUILayout.Button("点和区域"))
+            {
+                MapEditorFSM.Instance.curState = e_Editor_State.Edit_Map | e_Editor_State.Edit_Point_and_Area;
                 curhandler = new PointAndAreaEditorHandler(MapModifier.Instance.CurMap);
+            }
             if (GUILayout.Button("物体"))
+            {
+                MapEditorFSM.Instance.curState = e_Editor_State.Edit_Map | e_Editor_State.Edit_Object;
                 curhandler = new GameObjectEditorHandler(MapModifier.Instance.CurMap);
+            }
             //if (GUILayout.Button("修改"))
             //    curhandler = null;
             //if (GUILayout.Button("删除"))
