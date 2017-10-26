@@ -10,8 +10,8 @@ public static class ExposeProperties
 	public static void Expose(PropertyField[] properties)
 	{
 		var emptyOptions = new GUILayoutOption[0];
-        var re = SceneView.lastActiveSceneView.position;
-        GUILayout.BeginArea(new Rect(0, re.height - 100, re.width-100, 100), EditorStyles.textArea);
+
+       
         GUILayout.BeginVertical();
         foreach (PropertyField field in properties)
 		{
@@ -83,7 +83,7 @@ public static class ExposeProperties
             GUILayout.EndHorizontal();
 		}
         GUILayout.EndVertical();
-        GUILayout.EndArea();
+       
     }
  
 	public static PropertyField[] GetProperties(object obj)

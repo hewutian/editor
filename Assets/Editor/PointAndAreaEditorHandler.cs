@@ -85,8 +85,8 @@ public class PointAndAreaEditorHandler : EditorHandler
         }
         else
         {
-
             int curID = GUIUtility.hotControl;
+            Debug.Log(curID);
             if (HandleRecorder.handleIDAndTarget.ContainsKey(curID))
             {
                 curFocusID = curID;
@@ -94,8 +94,16 @@ public class PointAndAreaEditorHandler : EditorHandler
             if (HandleRecorder.handleIDAndTarget.ContainsKey(curFocusID))
             {
                 Handles.BeginGUI();
+                var re = SceneView.lastActiveSceneView.position;
+                GUILayout.BeginArea(new Rect(re.width / 4, re.height - 120, re.width/2, 120), EditorStyles.textArea);
                 var m_fields = ExposeProperties.GetProperties(HandleRecorder.handleIDAndTarget[curFocusID]);
                 ExposeProperties.Expose(m_fields);
+                if(GUILayout.Button("删除"))
+                {
+                    MapModifier.Instance.RemoveInfo(HandleRecorder.handleIDAndTarget[curFocusID]);
+                    HandleRecorder.handleIDAndTarget.Remove(curFocusID);
+                }
+                GUILayout.EndArea();
                 Handles.EndGUI();
             }
         }

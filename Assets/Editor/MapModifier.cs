@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEditor;
+using System;
 public class MapModifier
 {
     CustomMap cm;
@@ -60,6 +61,33 @@ public class MapModifier
             cm.unreachable.Remove(index);
         }
     }
+
+    public void RemoveInfo(object info)
+    {
+        Type infotype = info.GetType();
+        if(infotype == typeof(NodeInfo))
+        {
+            if(cm.designerNode.Contains((NodeInfo)info))
+            {
+                cm.designerNode.Remove((NodeInfo)info);
+            }
+        }
+        else if(infotype == typeof(AreaInfo))
+        {
+            if (cm.designerArea.Contains((AreaInfo)info))
+            {
+                cm.designerArea.Remove((AreaInfo)info);
+            }
+        }
+        else if(infotype == typeof(CustomItemInfo))
+        {
+            if (cm.itemlist.Contains((CustomItemInfo)info))
+            {
+                cm.itemlist.Remove((CustomItemInfo)info);
+            }
+        }
+    }
+
 
     public void AddItem(CustomItemInfo iteminfo)
     { }
