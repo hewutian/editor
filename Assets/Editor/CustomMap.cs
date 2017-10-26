@@ -9,14 +9,14 @@ public class CustomMap : ScriptableObject
     public int mapheight;
     public int unitlength;
     public int paintedgridlength;
-    public int tilelength;
+  //  public int tilelength;
     public Vector3 dir;
     public float max = 5;
     public GameObject scene;
     public bool hasGeneratedData = false;
     public Vector3 center;
     public string prefabName;
-    public int id;
+    public int tid;
 
     [SerializeField]
     public List<int> unreachable = new List<int>();

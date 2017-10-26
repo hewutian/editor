@@ -25,13 +25,13 @@ public enum e_AreaType
 public class CustomItemInfo //: ScriptableObject
 {
    // public e_ItemType type;
-    public float posy;
+  //  public float posy;
     public int lefttopsite;
-    public int width;
-    public int height;
-    public bool isreachable;
-    public string name = "";
-    public int id;
+  //  public int width;
+   // public int height;
+  //  public bool isreachable;
+ //   public string name = "";
+    public int tid;
     //public GameObject prefab;
 
 }
