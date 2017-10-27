@@ -125,8 +125,17 @@ public class MapInspector : Editor
         //}
         if (GUILayout.Button("编辑页面"))
         {
-            MapEditorFSM.Instance.curState |= e_Editor_State.Edit_Map;
-            MapSceneView.Instance.ShowMainEditPage();
+            if ((MapEditorFSM.Instance.curState & e_Editor_State.Edit_Map) == e_Editor_State.Edit_Map)
+            {
+                EditDetailsWindow.MyWindow.Close();
+                MapSceneView.Instance.OriginalSceneDelegate();
+            }
+            else
+            {
+                MapEditorFSM.Instance.curState |= e_Editor_State.Edit_Map;
+                MapSceneView.Instance.curhandler = null;
+                MapSceneView.Instance.ShowMainEditPage();
+            }
             SceneView.RepaintAll();
         }
         if (cm == null)
