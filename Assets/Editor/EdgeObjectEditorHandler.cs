@@ -34,7 +34,7 @@ public class EdgeObjectEditorHandler:EditorHandler
         Vector3 girdlefttopcenter = MapModifier.Instance.TranselateIndexToPostion(girdlefttopindex);
         Vector3[] fourCorner = new Vector3[4];
         fourCorner[0] = new Vector3(girdlefttopcenter.x  - cm.unitlength/2f, girdlefttopcenter.y, girdlefttopcenter.z + cm.unitlength/2f); //girdlefttopcenter ;
-        fourCorner[1] =new Vector3(girdlefttopcenter.x + cm.paintedgridlength - cm.unitlength/2f, girdlefttopcenter.y, girdlefttopcenter.z);
+        fourCorner[1] =new Vector3(girdlefttopcenter.x + cm.paintedgridlength - cm.unitlength/2f, girdlefttopcenter.y, girdlefttopcenter.z + cm.unitlength / 2f);
         fourCorner[2] = new Vector3(girdlefttopcenter.x - cm.unitlength/2f, girdlefttopcenter.y, girdlefttopcenter.z - cm.paintedgridlength + cm.unitlength/2f);
         fourCorner[3] = new Vector3(girdlefttopcenter.x + cm.paintedgridlength - cm.unitlength/2f, girdlefttopcenter.y, girdlefttopcenter.z - cm.paintedgridlength + cm.unitlength/2f);
         float min = cm.paintedgridlength;
@@ -58,6 +58,7 @@ public class EdgeObjectEditorHandler:EditorHandler
             Handles.DrawWireDisc(end, Vector3.up, .5f);
             Handles.color = new Color(128 / 255f, 0, 128 / 255f);
             Handles.DrawLine(start, end);
+            Debug.Log(start + "start end" + end);
         }
         HandleUtility.AddDefaultControl(controlID);
         switch (current.type)
