@@ -22,14 +22,6 @@ public class PointAndAreaEditorHandler : EditorHandler
         }
         MapModifier.Instance.ShowAreaFreeMoveHandles();
         MapModifier.Instance.ShowPointFreeMoveHandles();
-        Handles.BeginGUI();
-        GUILayout.BeginArea(new Rect(Screen.width - 100, Screen.height - 80, 90, 50));
-        if (GUILayout.Button("绘制模式"))
-            AdjustmentMode = false;
-        if (GUILayout.Button("调节模式"))
-            AdjustmentMode = true;
-        GUILayout.EndArea();
-        Handles.EndGUI();
     }
 
     public override void DealWithEvent()
