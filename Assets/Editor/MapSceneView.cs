@@ -5,7 +5,7 @@ using UnityEditor;
 public class MapSceneView
 {
     static MapSceneView instance;
-    EditorHandler curhandler;
+    public EditorHandler curhandler;
     public static MapSceneView Instance
     {
         get
@@ -60,6 +60,7 @@ public class MapSceneView
             {
                 MapEditorFSM.Instance.curState = e_Editor_State.Edit_Map | e_Editor_State.Edit_Point_and_Area;
                 curhandler = new PointAndAreaEditorHandler(MapModifier.Instance.CurMap);
+                EditDetailsWindow.AddWindow(null);
             }
             if (GUILayout.Button("物体"))
             {
