@@ -10,7 +10,7 @@ public class HandleRecorder
    public static void RecordHandles(int controlID, Vector3 position, Quaternion rotation, float size, EventType eventType)
     {
         //Debug.Log(controlID);
-        
+
         curControlID = controlID;
     }
 

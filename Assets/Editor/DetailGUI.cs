@@ -86,11 +86,12 @@ public static class ExposeProperties
        
     }
  
-	public static PropertyField[] GetProperties(object obj)
+	public static PropertyField[] GetProperties(object obj, out Type objType)
 	{
 		var fields = new List<PropertyField>();
+        objType = obj.GetType();
         // PropertyInfo[] infos = obj.GetType().GetProperties(BindingFlags.GetProperty|BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);//BindingFlags.Public | BindingFlags.Instance);
-        FieldInfo[] infos = obj.GetType().GetFields(BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
+        FieldInfo[] infos = objType.GetFields(BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
         foreach (FieldInfo info in infos)
 		{
 		//	if (!(info.CanRead && info.CanWrite))
