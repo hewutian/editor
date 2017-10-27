@@ -75,7 +75,6 @@ public class PointAndAreaEditorHandler : EditorHandler
                 break;
         }
         int curID = GUIUtility.hotControl;
-        Debug.Log(curID);
         if (HandleRecorder.handleIDAndTarget.ContainsKey(curID))
         {
             curFocusID = curID;
