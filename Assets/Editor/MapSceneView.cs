@@ -66,6 +66,11 @@ public class MapSceneView
                 MapEditorFSM.Instance.curState = e_Editor_State.Edit_Map | e_Editor_State.Edit_Object;
                 curhandler = new GameObjectEditorHandler(MapModifier.Instance.CurMap);
             }
+            if(GUILayout.Button("边物体"))
+            {
+                //curhandler = new 
+
+            }
             //if (GUILayout.Button("修改"))
             //    curhandler = null;
             //if (GUILayout.Button("删除"))

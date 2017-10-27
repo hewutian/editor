@@ -58,3 +58,11 @@ public class AreaInfo//:ScriptableObject
     public string name = "";
     public int id;
 }
+
+[System.Serializable]
+public class EdgeObjectInfo
+{
+    public int onegrid;
+    public int another;
+    public int tid;
+}

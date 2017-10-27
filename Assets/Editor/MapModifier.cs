@@ -411,6 +411,12 @@ public class MapModifier
         tmp.site = site;
         if(!cm.designerNode.Contains(tmp))
         {
+            int idnext;
+            if (cm.designerNode.Count > 0)
+                idnext = cm.designerNode[cm.designerNode.Count - 1].id + 1;
+            else
+                idnext = 0;
+            tmp.id = idnext;
             cm.designerNode.Add(tmp);
         }
     }
@@ -422,6 +428,12 @@ public class MapModifier
         tmp.end = end;
         if (!cm.designerArea.Contains(tmp))
         {
+            int idnext;
+            if (cm.designerArea.Count > 0)
+                idnext = cm.designerArea[cm.designerArea.Count - 1].id + 1;
+            else
+                idnext = 0;
+            tmp.id = idnext;
             cm.designerArea.Add(tmp);
         }
     }
