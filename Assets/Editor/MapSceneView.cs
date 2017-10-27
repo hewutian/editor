@@ -69,7 +69,7 @@ public class MapSceneView
             if(GUILayout.Button("边物体"))
             {
                 //curhandler = new 
-
+                curhandler = new EdgeObjectEditorHandler(MapModifier.Instance.CurMap);
             }
             //if (GUILayout.Button("修改"))
             //    curhandler = null;

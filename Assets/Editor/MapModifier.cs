@@ -381,6 +381,18 @@ public class MapModifier
         return gridindex;
     }
 
+    //public Vector3 CaculatePaintedGridCenter(int index)
+    //{
+    //    int xlength = (int)cm.mapwidth / cm.unitlength;
+    //    //int zlength = (int)cm.mapheight / cm.unitlength;
+    //    int xdelta = index % xlength;
+    //    int zdelta = index / xlength;
+    //    Vector3 pos = new Vector3(maplefttopcenter.x + xdelta * cm.unitlength, 0, maplefttopcenter.z - zdelta * cm.unitlength);
+
+    //    return pos;
+    //}
+
+
     public int CaculateLefttopUnitIndexOfGrid(int gridindex)
     {
         
