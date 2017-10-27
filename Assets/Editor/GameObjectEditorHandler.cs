@@ -28,8 +28,9 @@ public class GameObjectEditorHandler : EditorHandler
         }
         GUILayout.EndArea();
         Handles.EndGUI();
-        Vector3 mapsize = MapModifier.Instance.MapSize / (cm.paintedgridlength / cm.unitlength);
-        MapAux.DrawMapCells(cm.center, mapsize, cm.paintedgridlength, Color.yellow);
+        Vector3 mapsize = MapModifier.Instance.MapSize;// / (cm.paintedgridlength / cm.unitlength);
+        MapAux.DrawMapCellsDotted(cm.center, mapsize, cm.unitlength, Color.yellow);
+        MapAux.DrawMapCells(cm.center, mapsize / (cm.paintedgridlength / cm.unitlength), cm.paintedgridlength, Color.blue);
         MapModifier.Instance.ShowGameObjectIndexInfo();
     }
     public override void DealWithEvent()
@@ -49,6 +50,9 @@ public class GameObjectEditorHandler : EditorHandler
         int girdlefttopindex = unitindexes[0];
         Vector3 girdlefttopcenter = MapModifier.Instance.TranselateIndexToPostion(girdlefttopindex);
         Vector3 buildcenter = MapModifier.Instance.CaculateCreateGameObjectCenter(girdlefttopcenter, objectsize);
+
+        MapAux.ShowLabel(new Vector3(lefttopcenter.x + cm.unitlength, lefttopcenter.y, lefttopcenter.z + cm.unitlength), biggridindex.ToString(), Color.black);
+
         var flag = MapModifier.Instance.CheckContainUnreachable(girdlefttopindex, objectsize);
         if (flag == true)
             MapAux.DrawLines(girdlefttopcenter, objectsize, Color.red);

@@ -12,7 +12,8 @@ public class PointAndAreaEditorHandler : EditorHandler
     public override void ShowAuxInfo()
     {
         Vector3 mapsize = MapModifier.Instance.MapSize;
-        MapAux.DrawMapCells(cm.center, mapsize, cm.unitlength, Color.yellow);
+        MapAux.DrawMapCellsDotted(cm.center, mapsize, cm.unitlength, Color.yellow);
+        MapAux.DrawMapCells(cm.center, mapsize / (cm.paintedgridlength / cm.unitlength), cm.paintedgridlength, Color.blue);
         foreach (var e in cm.unreachable)
         {
             Vector3 center = MapModifier.Instance.TranselateIndexToPostion(e);

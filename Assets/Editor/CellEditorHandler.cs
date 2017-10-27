@@ -5,10 +5,14 @@ using UnityEditor;
 
 public class CellEditorHandler : EditorHandler
 {
+   // int cellIndex;
+  //  int bigcellIndex;
     public override void ShowAuxInfo()
     {
+        
         Vector3 mapsize = MapModifier.Instance.MapSize;
-        MapAux.DrawMapCells(cm.center, mapsize, cm.unitlength, Color.yellow);
+        MapAux.DrawMapCellsDotted(cm.center, mapsize, cm.unitlength, Color.yellow);
+        MapAux.DrawMapCells(cm.center, mapsize/(cm.paintedgridlength/cm.unitlength), cm.paintedgridlength, Color.blue);
         foreach (var e in cm.unreachable)
         {
             Vector3 center = MapModifier.Instance.TranselateIndexToPostion(e);
@@ -27,6 +31,9 @@ public class CellEditorHandler : EditorHandler
         collisionPos = new Vector3(collisionPos.x, 0, collisionPos.z);
         Vector3 lefttopcenter = MapModifier.Instance.CaculateCellCenterByPos(collisionPos);
         int lefttopindex = MapModifier.Instance.CaculateIndexForPos(lefttopcenter);
+
+        MapAux.ShowLabel(new Vector3(lefttopcenter.x + cm.unitlength, lefttopcenter.y,lefttopcenter.z + cm.unitlength), lefttopindex.ToString(), Color.black);
+
         Vector3 size = new Vector3(1, 0, 1);
         var flag = MapModifier.Instance.CheckContainUnreachable(lefttopindex, size);
         if (flag)

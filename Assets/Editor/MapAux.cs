@@ -25,6 +25,26 @@ public class MapAux
             Handles.DrawLine(curpoint, curpoint + new Vector3(xnum*unitlength, 0, 0));
         }
     }
+    public static void DrawMapCellsDotted(Vector3 center, Vector3 size, float unitlength, Color cl)
+    {
+        int xnum = (int)size.x;
+        int znum = (int)size.z;
+        Handles.color = cl;
+        Vector3 lefttop = new Vector3(center.x - xnum * unitlength / 2, size.y, center.z + znum * unitlength / 2);
+        // Vector3[] xpoints = new Vector3[xnum + 1];
+        // Vector3[] zpoints = new Vector3[znum + 1];
+        for (int i = 0; i <= xnum; ++i)
+        {
+            Vector3 curpoint = lefttop + new Vector3(i * unitlength, 0, 0);
+            Handles.DrawDottedLine(curpoint, curpoint - new Vector3(0, 0, znum * unitlength),2f);
+        }
+
+        for (int i = 0; i <= znum; ++i)
+        {
+            Vector3 curpoint = lefttop - new Vector3(0, 0, unitlength * i);
+            Handles.DrawDottedLine(curpoint, curpoint + new Vector3(xnum * unitlength, 0, 0),2f);
+        }
+    }
     //绘制不可达的格子 
     public static void DrawMapUnreachableArea(Vector3 center,float unitlength,Color cl)
     {
@@ -74,6 +94,13 @@ public class MapAux
        
     }
 
+    public static void ShowLabel(Vector3 pos,string text,Color cl)
+    {
+        var newstyle = new GUIStyle();
+        newstyle.fontSize = 10;
+        newstyle.normal.textColor = cl;
+        Handles.Label(pos, text, newstyle);
+    }
 
 
     //根据左上格子的中心位置来绘制一定规格的矩形
