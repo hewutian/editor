@@ -8,7 +8,7 @@ public class MapModifier
 {
     CustomMap cm;
     Vector3 mapsize;
-    
+    List<int> allunreachable = new List<int>();
     //int curControlID;
     [SerializeField]
     Vector3 maplefttopcenter;
@@ -39,6 +39,7 @@ public class MapModifier
     public void SetCustomMap(CustomMap cmap)
     {
         cm = cmap;
+        allunreachable = cm.unreachable;
     }
 
     public void AddUnreachableIndex(int index)
@@ -203,14 +204,16 @@ public class MapModifier
         for (int i = 0; i < num; ++i)
         {
             int index = posindex + (i / xlength) * cm.mapwidth / cm.unitlength + i % xlength;
-            cm.unreachable.Add(index);
+            //cm.unreachable.Add(index);
+            if(!allunreachable.Contains(index))
+                allunreachable.Add(index);
         }
         CustomItemInfo newitem = new CustomItemInfo();
         // newitem.type = itemtype;
-        newitem.width = xlength;
-        newitem.height = zlength;
+        //newitem.width = xlength;
+       // newitem.height = zlength;
         newitem.lefttopsite = posindex;
-        newitem.name = ResourceCenter.Instance.prefabObjects[itemindex].name;
+       // newitem.name = ResourceCenter.Instance.prefabObjects[itemindex].name;
         //newitem.prefab = ResourceCenter.Instance.prefabObjects[itemindex];
         cm.itemlist.Add(newitem);
     }
@@ -229,22 +232,20 @@ public class MapModifier
         int row = index / (cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
-        GameObject objTarget;
-        objTarget = GameObject.Instantiate(ResourceCenter.Instance.objectDic[iteminfo.name]);
-        Vector3 centerpos = CaculateCreateGameObjectCenter(lefttopcenterpos, new Vector3(iteminfo.width, 1, iteminfo.height));
+        //GameObject objTarget;
+        //objTarget = GameObject.Instantiate(ResourceCenter.Instance.objectDic[iteminfo.name]);
+        //Vector3 centerpos = CaculateCreateGameObjectCenter(lefttopcenterpos, new Vector3(iteminfo.width, 1, iteminfo.height));
         //if (objTarget)
-        //objTarget.transform.position = centerpos;
-        if (objTarget)
-        {
-            objTarget.transform.position = new Vector3(centerpos.x, iteminfo.posy, centerpos.z);
-            objTarget.transform.parent = GameObject.FindObjectOfType<SceneMark>().gameObject.transform;
+        //{
+        //    objTarget.transform.position = new Vector3(centerpos.x, iteminfo.posy, centerpos.z);
+        //    objTarget.transform.parent = GameObject.FindObjectOfType<SceneMark>().gameObject.transform;
 
-            if (objTarget.GetComponent<ItemMark>() == null)
-            {
-                ItemMark itemMark = objTarget.AddComponent<ItemMark>();
-                itemMark.sceneMark = GameObject.FindObjectOfType<SceneMark>();
-            }
-        }
+        //    if (objTarget.GetComponent<ItemMark>() == null)
+        //    {
+        //        ItemMark itemMark = objTarget.AddComponent<ItemMark>();
+        //        itemMark.sceneMark = GameObject.FindObjectOfType<SceneMark>();
+        //    }
+        //}
     }
 
 
@@ -356,17 +357,17 @@ public class MapModifier
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
 
-        GameObject objTarget;
-        objTarget = GameObject.Instantiate(ResourceCenter.Instance.objectDic[iteminfo.name]);
-        Vector3 centerpos = CaculateCreateGameObjectCenter(lefttopcenterpos, new Vector3(iteminfo.width, 1, iteminfo.height));
-        //if (objTarget)
-        //objTarget.transform.position = centerpos;
-        objTarget.transform.position = new Vector3(centerpos.x, iteminfo.posy, centerpos.z);
-        //var newstyle = new GUIStyle();
-        //newstyle.fontSize = 10;
-        //Handles.Label(centerpos, iteminfo.id.ToString(), newstyle);
-        // cm.unreachable.Add(index);
-        //return centerpos;
+        //GameObject objTarget;
+        //objTarget = GameObject.Instantiate(ResourceCenter.Instance.objectDic[iteminfo.name]);
+        //Vector3 centerpos = CaculateCreateGameObjectCenter(lefttopcenterpos, new Vector3(iteminfo.width, 1, iteminfo.height));
+        ////if (objTarget)
+        ////objTarget.transform.position = centerpos;
+        //objTarget.transform.position = new Vector3(centerpos.x, iteminfo.posy, centerpos.z);
+        ////var newstyle = new GUIStyle();
+        ////newstyle.fontSize = 10;
+        ////Handles.Label(centerpos, iteminfo.id.ToString(), newstyle);
+        //// cm.unreachable.Add(index);
+        ////return centerpos;
     }
 
     public int CaculatePaintedGridFromUnitIndex(int lefttopindex)
@@ -473,16 +474,16 @@ public class MapModifier
                                                                 // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
             var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
 
-           // GameObject objTarget;
-           // objTarget = GameObject.Instantiate(ResourceCenter.Instance.objectDic[e.name]);
-            Vector3 centerpos = CaculateCreateGameObjectCenter(lefttopcenterpos, new Vector3(e.width, 1, e.height));
-            var newstyle = new GUIStyle();
-            newstyle.fontSize = 10;
-            Handles.Label(centerpos, e.id.ToString(), newstyle);
+           //// GameObject objTarget;
+           //// objTarget = GameObject.Instantiate(ResourceCenter.Instance.objectDic[e.name]);
+           // Vector3 centerpos = CaculateCreateGameObjectCenter(lefttopcenterpos, new Vector3(e.width, 1, e.height));
+           // var newstyle = new GUIStyle();
+           // newstyle.fontSize = 10;
+           // Handles.Label(centerpos, e.id.ToString(), newstyle);
 
-            //if (objTarget)
-            //objTarget.transform.position = centerpos;
-            //  objTarget.transform.position = new Vector3(centerpos.x, e.posy, centerpos.z);
+           // //if (objTarget)
+           // //objTarget.transform.position = centerpos;
+           // //  objTarget.transform.position = new Vector3(centerpos.x, e.posy, centerpos.z);
         }
     }
 

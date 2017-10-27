@@ -84,7 +84,7 @@ public class PointAndAreaEditorHandler : EditorHandler
             }
         }
         else
-        {
+       	{
             int curID = GUIUtility.hotControl;
             Debug.Log(curID);
             if (HandleRecorder.handleIDAndTarget.ContainsKey(curID))
@@ -105,11 +105,6 @@ public class PointAndAreaEditorHandler : EditorHandler
                 }
                 GUILayout.EndArea();
                 Handles.EndGUI();
-                HandleUtility.AddDefaultControl(curFocusID);
-            }
-            else
-            {
-                HandleUtility.AddDefaultControl(controlID);
             }
         }
         SceneView.RepaintAll();
