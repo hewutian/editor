@@ -34,7 +34,11 @@ public class CellEditorHandler : EditorHandler
 
         MapAux.ShowLabel(new Vector3(lefttopcenter.x + cm.unitlength, lefttopcenter.y,lefttopcenter.z + cm.unitlength), lefttopindex.ToString(), Color.black);
 
-        Vector3 size = new Vector3(1, 0, 1);
+        Vector3 size = new Vector3(cm.unitlength, 0, cm.unitlength);
+        if(lefttopindex == 335)
+        {
+            Debug.Log(lefttopindex);
+        }
         var flag = MapModifier.Instance.CheckContainUnreachable(lefttopindex, size);
         if (flag)
         {
@@ -44,7 +48,7 @@ public class CellEditorHandler : EditorHandler
         {
             Handles.color = Color.red;
         }
-        Handles.DrawSolidDisc(lefttopcenter, Vector3.up, .5f);
+        Handles.DrawSolidDisc(lefttopcenter, Vector3.up, cm.unitlength/2);
         switch (current.type)
         {
             case EventType.mouseDown:

@@ -142,7 +142,7 @@ public class MapModifier
         int row = (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var indexUnitpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, pos.y, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
-       //  Debug.Log(indexUnitpos + "-------indexUnitpos");
+         Debug.Log(indexUnitpos + "-------indexUnitpos");
         return indexUnitpos;
     }
     //根据位置来求对应的在地图中的小格子索引
@@ -151,25 +151,25 @@ public class MapModifier
         Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
         int rank = (int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
         int row = (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
-        int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank - 1);
-       // Debug.Log(index + "----index");
+        int index = (row - 1) *(int)Math.Round(( cm.mapwidth / cm.unitlength)) + (rank - 1);
+        // Debug.Log((rank - 1) + "----(rank - 1)");
         return index;
     }
     //根据左上索引和轮廓来看是否包含了不可达的位置
     public bool CheckContainUnreachable(int siteindex, Vector3 size)
     {
-        int xlength = (int)size.x / cm.unitlength;
-        int zlength = (int)size.z / cm.unitlength;
+        int xlength = (int)(size.x / cm.unitlength);
+        int zlength = (int)(size.z / cm.unitlength);
         int num = xlength * zlength;
 
         //格子越界
-        if (siteindex % (cm.mapwidth / cm.unitlength) + xlength > (cm.mapwidth / cm.unitlength))
+        if (siteindex % (int)Math.Round((cm.mapwidth / cm.unitlength)) + xlength > (int)Math.Round((cm.mapwidth / cm.unitlength)))
             return true;
 
         //var unreachable = cm.unreachable;
         for (int i = 0; i < num; ++i)
         {
-            int index = siteindex + (i / xlength) * cm.mapwidth / cm.unitlength + i % xlength;
+            int index = siteindex + (i / xlength) * (int)Math.Round((cm.mapwidth / cm.unitlength)) + i % xlength;
             if (cm.unreachable.Contains(index))
             {
                 return true;
@@ -203,7 +203,7 @@ public class MapModifier
         int num = (int)size.x * (int)size.z;
         for (int i = 0; i < num; ++i)
         {
-            int index = posindex + (i / xlength) * cm.mapwidth / cm.unitlength + i % xlength;
+            int index = posindex + (i / xlength) * (int)(cm.mapwidth / cm.unitlength) + i % xlength;
             //cm.unreachable.Add(index);
             if(!allunreachable.Contains(index))
                 allunreachable.Add(index);
@@ -228,8 +228,8 @@ public class MapModifier
     {
         int index = iteminfo.lefttopsite;
         Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
-        int rank = index % (cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
-        int row = index / (cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
+        int rank = index % (int)(cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
+        int row = index / (int)(cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
         //GameObject objTarget;
@@ -321,7 +321,7 @@ public class MapModifier
     //把地图的小格索引转成对应的格子中心位置
     public Vector3 TranselateIndexToPostion(int index)
     {
-        int xlength = (int)cm.mapwidth / cm.unitlength;
+        int xlength = (int)(cm.mapwidth / cm.unitlength);
         //int zlength = (int)cm.mapheight / cm.unitlength;
         int xdelta = index % xlength;
         int zdelta = index / xlength;
@@ -352,8 +352,8 @@ public class MapModifier
     {
         int index = iteminfo.lefttopsite;
         Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
-        int rank = index % (cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
-        int row = index / (cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
+        int rank = index % (int)(cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
+        int row = index / (int)(cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
 
@@ -372,9 +372,9 @@ public class MapModifier
 
     public int CaculatePaintedGridFromUnitIndex(int lefttopindex)
     {
-        int scale = cm.paintedgridlength / cm.unitlength;
-        int rank = lefttopindex % (cm.mapwidth / cm.unitlength) + 1;
-        int row = lefttopindex / (cm.mapwidth / cm.unitlength) + 1;
+        int scale = (int)(cm.paintedgridlength / cm.unitlength);
+        int rank = lefttopindex %(int) (cm.mapwidth / cm.unitlength) + 1;
+        int row = lefttopindex / (int)(cm.mapwidth / cm.unitlength) + 1;
         int gridrow = (int)Mathf.Ceil(row /(float) scale);
         int gridrank = (int)Mathf.Ceil(rank / (float)scale);
         int gridindex = (gridrow - 1) * cm.mapwidth / cm.paintedgridlength + (gridrank - 1);
@@ -403,7 +403,7 @@ public class MapModifier
 
     public int[] CaculateUnitIndexesOfGrid(int gridindex)
     {
-        int scale = cm.paintedgridlength / cm.unitlength;
+        int scale =(int)( cm.paintedgridlength / cm.unitlength);
         int[] indexes = new int[scale * scale];
         int rank = gridindex % (cm.mapwidth / cm.paintedgridlength) ;
         int row = gridindex / (cm.mapwidth / cm.paintedgridlength) ;
@@ -412,7 +412,7 @@ public class MapModifier
         for(int i = 0;i<scale;++i)
             for(int j=0;j<scale;++j)
             {
-                indexes[scale * i +  j] = startnum + (cm.mapwidth / cm.unitlength) * i + j;
+                indexes[scale * i +  j] = startnum +(int) (cm.mapwidth / cm.unitlength) * i + j;
             }
         return indexes;
     }
@@ -493,8 +493,8 @@ public class MapModifier
         {
             int index = e.lefttopsite;
             Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
-            int rank = index % (cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
-            int row = index / (cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
+            int rank = index % (int)(cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
+            int row = index / (int)(cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
                                                                 // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
             var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
 
