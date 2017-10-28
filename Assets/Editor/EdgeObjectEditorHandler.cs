@@ -28,6 +28,11 @@ public class EdgeObjectEditorHandler:EditorHandler
         Vector3 lefttopcenter = MapModifier.Instance.CaculateCellCenterByPos(collisionPos);
        // Vector3 objectsize = Vector3.zero;//MapModifier.Instance.CaculateGameObjectSize(selectedObjectIndex);
         int lefttopindex = MapModifier.Instance.CaculateIndexForPos(lefttopcenter);
+        //----------------------
+        if(lefttopindex == 167)
+        {
+            Debug.Log(lefttopindex);
+        }
         int biggridindex = MapModifier.Instance.CaculatePaintedGridFromUnitIndex(lefttopindex);
         int[] unitindexes = MapModifier.Instance.CaculateUnitIndexesOfGrid(biggridindex);
         int girdlefttopindex = unitindexes[0];

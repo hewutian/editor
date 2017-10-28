@@ -203,7 +203,7 @@ public class MapModifier
         int num = (int)size.x * (int)size.z;
         for (int i = 0; i < num; ++i)
         {
-            int index = posindex + (i / xlength) * (int)(cm.mapwidth / cm.unitlength) + i % xlength;
+            int index = posindex + (i / xlength) * (int)Math.Round((cm.mapwidth / cm.unitlength)) + i % xlength;
             //cm.unreachable.Add(index);
             if(!allunreachable.Contains(index))
                 allunreachable.Add(index);
@@ -228,8 +228,8 @@ public class MapModifier
     {
         int index = iteminfo.lefttopsite;
         Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
-        int rank = index % (int)(cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
-        int row = index / (int)(cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
+        int rank = index % (int)Math.Round((cm.mapwidth / cm.unitlength)) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
+        int row = index / (int)Math.Round((cm.mapwidth / cm.unitlength)) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
         //GameObject objTarget;
@@ -253,9 +253,9 @@ public class MapModifier
     {
         ResourceCenter.Instance.Init("Assets/prefab/");
         mapsize = new Vector3();
-        mapsize.x = cm.mapwidth / cm.unitlength;
+        mapsize.x = (int)Math.Round((cm.mapwidth / cm.unitlength));
         mapsize.y = 0;
-        mapsize.z = cm.mapheight / cm.unitlength;
+        mapsize.z = (int)Math.Round((cm.mapheight / cm.unitlength));//cm.mapheight / cm.unitlength;
         maplefttopcenter = new Vector3(cm.center.x - cm.mapwidth / 2.0f + cm.unitlength/2f, 0, cm.center.z + cm.mapheight / 2.0f - cm.unitlength/2f);
         if (cm.hasGeneratedData == false)
         {
@@ -321,7 +321,7 @@ public class MapModifier
     //把地图的小格索引转成对应的格子中心位置
     public Vector3 TranselateIndexToPostion(int index)
     {
-        int xlength = (int)(cm.mapwidth / cm.unitlength);
+        int xlength = (int)Math.Round((cm.mapwidth / cm.unitlength));
         //int zlength = (int)cm.mapheight / cm.unitlength;
         int xdelta = index % xlength;
         int zdelta = index / xlength;
@@ -352,8 +352,8 @@ public class MapModifier
     {
         int index = iteminfo.lefttopsite;
         Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
-        int rank = index % (int)(cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
-        int row = index / (int)(cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
+        int rank = index % (int)Math.Round((cm.mapwidth / cm.unitlength)) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
+        int row = index / (int)Math.Round((cm.mapwidth / cm.unitlength)) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
         // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
         var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
 
@@ -372,9 +372,9 @@ public class MapModifier
 
     public int CaculatePaintedGridFromUnitIndex(int lefttopindex)
     {
-        int scale = (int)(cm.paintedgridlength / cm.unitlength);
-        int rank = lefttopindex %(int) (cm.mapwidth / cm.unitlength) + 1;
-        int row = lefttopindex / (int)(cm.mapwidth / cm.unitlength) + 1;
+        int scale = (int)Math.Round((cm.paintedgridlength / cm.unitlength));
+        int rank = lefttopindex % (int)Math.Round((cm.mapwidth / cm.unitlength)) + 1;
+        int row = lefttopindex / (int)Math.Round((cm.mapwidth / cm.unitlength)) + 1;
         int gridrow = (int)Mathf.Ceil(row /(float) scale);
         int gridrank = (int)Mathf.Ceil(rank / (float)scale);
         int gridindex = (gridrow - 1) * cm.mapwidth / cm.paintedgridlength + (gridrank - 1);
@@ -403,7 +403,7 @@ public class MapModifier
 
     public int[] CaculateUnitIndexesOfGrid(int gridindex)
     {
-        int scale =(int)( cm.paintedgridlength / cm.unitlength);
+        int scale = (int)Math.Round((cm.paintedgridlength / cm.unitlength));
         int[] indexes = new int[scale * scale];
         int rank = gridindex % (cm.mapwidth / cm.paintedgridlength) ;
         int row = gridindex / (cm.mapwidth / cm.paintedgridlength) ;
@@ -412,7 +412,7 @@ public class MapModifier
         for(int i = 0;i<scale;++i)
             for(int j=0;j<scale;++j)
             {
-                indexes[scale * i +  j] = startnum +(int) (cm.mapwidth / cm.unitlength) * i + j;
+                indexes[scale * i +  j] = startnum + (int)Math.Round((cm.mapwidth / cm.unitlength)) * i + j;
             }
         return indexes;
     }
@@ -493,8 +493,8 @@ public class MapModifier
         {
             int index = e.lefttopsite;
             Vector3 lefttop = new Vector3(cm.center.x - cm.mapwidth / 2.0f, 0, cm.center.z + cm.mapheight / 2.0f);
-            int rank = index % (int)(cm.mapwidth / cm.unitlength) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
-            int row = index / (int)(cm.mapwidth / cm.unitlength) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
+            int rank = index % (int)Math.Round((cm.mapwidth / cm.unitlength)) + 1;//(int)Mathf.Ceil((pos.x - lefttop.x) / (float)cm.unitlength);
+            int row = index / (int)Math.Round((cm.mapwidth / cm.unitlength)) + 1;// (int)Mathf.Ceil(Mathf.Abs(pos.z - lefttop.z) / (float)cm.unitlength);
                                                                 // int index = (row - 1) * cm.mapwidth / cm.unitlength + (rank);
             var lefttopcenterpos = new Vector3(rank * cm.unitlength + lefttop.x - cm.unitlength / 2.0f, 0, lefttop.z - row * cm.unitlength + cm.unitlength / 2.0f);
 
