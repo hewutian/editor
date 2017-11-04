@@ -12,16 +12,7 @@ public class PointAndAreaEditorHandler : EditorHandler
     int lastFocusID = 0;
     public override void ShowAuxInfo()
     {
-        Vector3 mapsize = MapModifier.Instance.MapSize;
-        MapAux.DrawMapCellsDotted(cm.center, mapsize, cm.unitlength, Color.yellow);
-        MapAux.DrawMapCells(cm.center, mapsize / (cm.paintedgridlength / cm.unitlength), cm.paintedgridlength, Color.blue);
-        foreach (var e in cm.unreachable)
-        {
-            Vector3 center = MapModifier.Instance.TranselateIndexToPostion(e);
-            MapAux.DrawMapUnreachableArea(center, cm.unitlength, Color.red);
-        }
-        MapModifier.Instance.ShowAreaFreeMoveHandles();
-        MapModifier.Instance.ShowPointFreeMoveHandles();
+       
     }
 
     public override void DealWithEvent()

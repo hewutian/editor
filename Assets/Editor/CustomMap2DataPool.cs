@@ -83,13 +83,13 @@ public static class CustomMap2DataPool {
 
         FileStream fstream = File.Create(DPath + "/MAPDATA.data.txt");
 
-        FileInfo[] allFiles = new DirectoryInfo(Application.dataPath).GetFiles("*.asset");
+        FileInfo[] allFiles = new DirectoryInfo(Application.dataPath + "/maps").GetFiles("*.asset");
         string resultStream = "";
         foreach (FileInfo file in allFiles)
         {
             if (file.Extension == ".asset")
             {
-                CustomMap temp = AssetDatabase.LoadAssetAtPath<CustomMap>("Assets/" + file.Name);
+                CustomMap temp = AssetDatabase.LoadAssetAtPath<CustomMap>("Assets/maps/" + file.Name);
                 if (temp != null)
                 {
                     resultStream += CustomMap2String(temp);

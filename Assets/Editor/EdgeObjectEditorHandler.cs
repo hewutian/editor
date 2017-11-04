@@ -10,10 +10,7 @@ public class EdgeObjectEditorHandler:EditorHandler
     bool isDrag = false;
     public override void ShowAuxInfo()
     {
-        Vector3 mapsize = MapModifier.Instance.MapSize;
-        MapAux.DrawMapCellsDotted(cm.center, mapsize, cm.unitlength, Color.yellow);
-        MapAux.DrawMapCells(cm.center, mapsize / (cm.paintedgridlength / cm.unitlength), cm.paintedgridlength, Color.blue);
-
+       
     }
 
     public override void DealWithEvent()

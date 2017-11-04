@@ -22,26 +22,26 @@ public enum e_AreaType
 }
 
 [System.Serializable]
+public struct Grids
+{
+    public int onegrid;
+    public int another;
+}
+
+
+[System.Serializable]
 public class CustomItemInfo //: ScriptableObject
 {
-   // public e_ItemType type;
-  //  public float posy;
     public int lefttopsite;
-  //  public int width;
-   // public int height;
-  //  public bool isreachable;
- //   public string name = "";
     public int tid;
-    //public GameObject prefab;
+    public int dir;
 
 }
 
 [System.Serializable]
 public class NodeInfo//:ScriptableObject
 {
-   // public e_NodeType type;
-    //public float posy;
-    public Vector3 site;
+    public Vector2 site;
     public string name = "";
     public int id;
 }
@@ -49,20 +49,29 @@ public class NodeInfo//:ScriptableObject
 [System.Serializable]
 public class AreaInfo//:ScriptableObject
 {
-   // public e_AreaType type;
-   // public int width;
-    //public int height;
-   // public int lefttopindex;
-    public Vector3 start;
-    public Vector3 end;
+    public Vector2 start;
+    public Vector2 end;
     public string name = "";
     public int id;
 }
 
 [System.Serializable]
-public class EdgeObjectInfo
+public class WallInfo
 {
-    public int onegrid;
-    public int another;
+    //  public int onegrid;
+    //   public int another;
+    // public List
+    public List<Grids> grids;
     public int tid;
+
+}
+
+[System.Serializable]
+public class DoorInfo
+{
+    // public int onegrid;
+    // public int another;
+    public List<Grids> grids;
+    public int tid;
+    public int openstate;
 }

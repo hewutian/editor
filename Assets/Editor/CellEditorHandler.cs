@@ -10,14 +10,7 @@ public class CellEditorHandler : EditorHandler
     public override void ShowAuxInfo()
     {
         
-        Vector3 mapsize = MapModifier.Instance.MapSize;
-        MapAux.DrawMapCellsDotted(cm.center, mapsize, cm.unitlength, Color.yellow);
-        MapAux.DrawMapCells(cm.center, mapsize/(cm.paintedgridlength/cm.unitlength), cm.paintedgridlength, Color.blue);
-        foreach (var e in cm.unreachable)
-        {
-            Vector3 center = MapModifier.Instance.TranselateIndexToPostion(e);
-            MapAux.DrawMapUnreachableArea(center, cm.unitlength, Color.red);
-        }
+      
     }
 
     public override void DealWithEvent()
@@ -31,8 +24,8 @@ public class CellEditorHandler : EditorHandler
         collisionPos = new Vector3(collisionPos.x, 0, collisionPos.z);
         Vector3 lefttopcenter = MapModifier.Instance.CaculateCellCenterByPos(collisionPos);
         int lefttopindex = MapModifier.Instance.CaculateIndexForPos(lefttopcenter);
-
-        MapAux.ShowLabel(new Vector3(lefttopcenter.x + cm.unitlength, lefttopcenter.y,lefttopcenter.z + cm.unitlength), lefttopindex.ToString(), Color.black);
+        string name = MapModifier.Instance.GetCollisionNameFromGUIPoint(current.mousePosition);
+        MapAux.ShowLabel(new Vector3(lefttopcenter.x + cm.unitlength, lefttopcenter.y,lefttopcenter.z + cm.unitlength), lefttopindex.ToString() + ",name:" + name, Color.black);
 
         Vector3 size = new Vector3(cm.unitlength, 0, cm.unitlength);
         if(lefttopindex == 335)

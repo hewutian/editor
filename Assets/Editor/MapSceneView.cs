@@ -5,6 +5,12 @@ using UnityEditor;
 public class MapSceneView
 {
     static MapSceneView instance;
+    public bool isShowingGrid;
+    public bool isShowingUnit;
+    public bool isShowingUnreachable;
+    public bool isShowingPointAndArea;
+    public bool isShowingBuilding;
+    public bool isShowingEdge;
     public EditorHandler curhandler;
     public static MapSceneView Instance
     {
@@ -83,6 +89,7 @@ public class MapSceneView
         HandleUtility.Repaint();
         if (curhandler != null)
         {
+            curhandler.DefaultShow();
             curhandler.ShowAuxInfo();
             curhandler.DealWithEvent();
         }

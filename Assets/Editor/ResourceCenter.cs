@@ -49,6 +49,9 @@ public class ResourceCenter
         // LoadAllPrefabs(prefabpath);
         LoadAllPrefabsInDirectory(prefabpath);
         GenerateAllThumbnails();
+        DPM.Instance.Init();
+       // LoadDPC();
+        test();
     }
     
     public void LoadAllPrefabsInDirectory(string path)
@@ -71,4 +74,54 @@ public class ResourceCenter
         prefabObjects = new GameObject[gameobjects.Count];
         prefabObjects = gameobjects.ToArray();
     }
-}
+
+    public void LoadDPC()
+    {
+        var tmp = DPM.Instance.BuildingsDP;
+    }
+    public void test()
+    {
+
+        var tmp = DPM.FindByKey(DPM.Instance.BuildingsDP, "build", 2);
+        var tmp2 = DPM.GetArray(tmp);
+        List<DataPoolVariable> list = new List<DataPoolVariable>();
+        // 这个地方要克隆，否则itFirst和it是一个地址的引用
+        DPM.PrintData(tmp);
+    }
+
+    public  GameObject GetPrefabInstance(int type)
+    {
+        string path;
+        switch(type)
+        {
+            case 1:
+                path = "DynamicObject\\floor\\prefab";
+                break;
+            case 2:
+                path = "DynamicObject\\wall\\prefab";
+                break;
+            case 3:
+                path = "DynamicObject\\door\\prefab";
+                break;
+         //   case 4:
+         //       path = "";
+        //        break;
+            default:
+                path = "";
+                break;
+        }
+        if (path == "")
+            return null;
+        DirectoryInfo dirs = new DirectoryInfo("Assets/" + path);
+        FileInfo[] files = dirs.GetFiles("*.prefab");
+        if (files.Length <= 0)
+            return null;
+        string fullpath = files[0].FullName.Replace(@"\", "/");
+        fullpath = "Assets" + fullpath.Replace(Application.dataPath, "");
+        GameObject sample = (GameObject)AssetDatabase.LoadAssetAtPath(fullpath, typeof(GameObject));
+        GameObject target = GameObject.Instantiate<GameObject>(sample);
+        return target;
+    }
+
+
+ }

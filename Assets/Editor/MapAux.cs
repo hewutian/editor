@@ -104,35 +104,22 @@ public class MapAux
 
 
     //根据左上格子的中心位置来绘制一定规格的矩形
-    public static void DrawLines(Vector3 pos, Vector3 size, Color cl)
+    public static void DrawLines(Vector3 pos, Vector3 size, float unitlength,Color cl)
     {
-        int xlength = (int)size.x;
-        int ylength = (int)size.y;
-        int zlength = (int)size.z;
-        Vector3 p2 = pos + Vector3.up * 0f + Vector3.right * (xlength - 0.5f) + Vector3.forward * 0.5f * 1;
-        Vector3 p3 = pos + Vector3.up * 0f + Vector3.right * (xlength - 0.5f) - Vector3.forward * (zlength - 0.5f);
-        Vector3 p4 = pos + Vector3.up * 0f - Vector3.right * 0.5f * 1 - Vector3.forward * (zlength - 0.5f);
-        Vector3 p1 = pos + Vector3.up * 0f - Vector3.right * 0.5f * 1 + Vector3.forward * 0.5f * 1;
-        //Vector3 p1 = center + Vector3.up * 0.5f + Vector3.right * 0.5f + Vector3.forward * 0.5f;
-        //Vector3 p2 = center + Vector3.up * 0.5f + Vector3.right * 0.5f - Vector3.forward * 0.5f;
-        //Vector3 p3 = center + Vector3.up * 0.5f - Vector3.right * 0.5f - Vector3.forward * 0.5f;
-        //Vector3 p4 = center + Vector3.up * 0.5f - Vector3.right * 0.5f + Vector3.forward * 0.5f;
-        //Vector3 p5 = center - Vector3.up * 0.5f + Vector3.right * 0.5f + Vector3.forward * 0.5f;
-        //Vector3 p6 = center - Vector3.up * 0.5f + Vector3.right * 0.5f - Vector3.forward * 0.5f;
-        //Vector3 p7 = center - Vector3.up * 0.5f - Vector3.right * 0.5f - Vector3.forward * 0.5f;
-        //Vector3 p8 = center - Vector3.up * 0.5f - Vector3.right * 0.5f + Vector3.forward * 0.5f;
+        float  xlength = size.x ;
+        float  ylength = size.y ;
+        float  zlength = size.z ;
+
+        Vector3 p1 = new Vector3(pos.x  - unitlength/2,pos.y,pos.z + unitlength/2);
+        Vector3 p2 = p1 + new Vector3(xlength, 0, 0);
+        Vector3 p3 = p2 + new Vector3(0, 0, -zlength);
+        Vector3 p4 = p3 + new Vector3(-xlength, 0, 0);
+
         Handles.color = cl;
         Handles.DrawLine(p1, p2);
         Handles.DrawLine(p2, p3);
         Handles.DrawLine(p3, p4);
         Handles.DrawLine(p4, p1);
-        //Handles.DrawLine(p5, p6);
-        //Handles.DrawLine(p6, p7);
-        //Handles.DrawLine(p7, p8);
-        //Handles.DrawLine(p8, p5);
-        //Handles.DrawLine(p1, p5);
-        //Handles.DrawLine(p2, p6);
-        //Handles.DrawLine(p3, p7);
-        //Handles.DrawLine(p4, p8);
+
     }
 }

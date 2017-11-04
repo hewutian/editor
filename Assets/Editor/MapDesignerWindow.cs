@@ -56,7 +56,6 @@ public class MapDesignerWindow : EditorWindow {
 
      void OnGUI()
     {
-
         GUILayout.BeginVertical();
         string[] types = { "tree", "car", "stone" };
         //for(int i = 0;i<3;++i)
@@ -64,7 +63,6 @@ public class MapDesignerWindow : EditorWindow {
         //    if (GUILayout.Button(types[i]))
         //        chooseType = (e_ItemType)i;
         // }
-
         if (GUILayout.Button("tree"))
             chooseType = e_ItemType.Tree;
         if (GUILayout.Button("box"))
@@ -81,12 +79,9 @@ public class MapDesignerWindow : EditorWindow {
 
     //void OnSceneGUI()
     //{
-
     //    //if(Event.current.type == EventType.mouseDown)
     //    //{
-
     //    //}
-
     //    Event current = Event.current;
     //    // int controlID = GUIUtility.GetControlID(FocusType.Passive);
     //    switch (current.type)
@@ -94,7 +89,6 @@ public class MapDesignerWindow : EditorWindow {
     //        case EventType.mouseDown:
     //            AddObject();
     //            break;
-
     //        case EventType.mouseUp:
     //            AddObject();
     //            current.Use();
@@ -103,7 +97,6 @@ public class MapDesignerWindow : EditorWindow {
     //            // HandleUtility.AddDefaultControl(controlID);
     //            break;
     //    }
-
     //}
 
     void AddObject()

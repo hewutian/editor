@@ -97,6 +97,18 @@ public class EditDetailsWindow : EditorWindow {
                 var newValuez = float.Parse(GUILayout.TextField(oldValue.z.ToString()));
                 field.SetValue(new Vector3(newValuex, newValuey, newValuez));
             }
+            else if (field.Type == SerializedPropertyType.Vector2)
+            {
+                var oldValue = (Vector2)field.GetValue();
+
+                GUILayout.Label(field.Name);
+                GUILayout.Label("x:");
+                var newValuex = float.Parse(GUILayout.TextField(oldValue.x.ToString()));
+                GUILayout.Label("z:");
+                var newValuez = float.Parse(GUILayout.TextField(oldValue.y.ToString()));
+               
+                field.SetValue(new Vector2(newValuex, newValuez));
+            }
             GUILayout.EndHorizontal();
         }
         if (GUILayout.Button("删除"))

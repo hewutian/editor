@@ -15,6 +15,7 @@ public class MapInspector : Editor
     public SerializedProperty designerNode;
     public SerializedProperty designerArea;
 
+
     void OnEnable()
     {
         mapname = target.name;
@@ -43,13 +44,13 @@ public class MapInspector : Editor
                     SceneView.RepaintAll();
                     Object.DestroyImmediate(GameObject.FindObjectOfType<SceneMark>().gameObject);
                     GenerateBaseData();
-                    GenerareCustomData();
+                   // GenerareCustomData();
                 }
             }
             else
             {
                 GenerateBaseData();
-                GenerareCustomData();
+                //GenerareCustomData();
             }
         }
         //if (GUILayout.Button("GenerateCustomData"))
@@ -105,6 +106,14 @@ public class MapInspector : Editor
         if (GUILayout.Button("清除物体数据"))
             ClearCustomData(3);
         GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("清除门数据"))
+            ClearCustomData(4);
+        if (GUILayout.Button("清除墙数据"))
+            ClearCustomData(5);
+        //if (GUILayout.Button("清除物体数据"))
+        //    ClearCustomData(3);
+        GUILayout.EndHorizontal();
         //if (GUILayout.Button("Save CustomMap as Json"))
         //    CustomMapJsonMgr.MapDataToJson(target);
         //if (GUILayout.Button("Import Json as CustomMap"))
@@ -138,6 +147,19 @@ public class MapInspector : Editor
             }
             SceneView.RepaintAll();
         }
+        GUILayout.BeginHorizontal();
+        MapSceneView.Instance.isShowingGrid = GUILayout.Toggle(MapSceneView.Instance.isShowingGrid, "显示大格");
+        MapSceneView.Instance.isShowingUnit = GUILayout.Toggle(MapSceneView.Instance.isShowingUnit, "显示小格");
+        MapSceneView.Instance.isShowingUnreachable = GUILayout.Toggle(MapSceneView.Instance.isShowingUnreachable, "显示可达");
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        MapSceneView.Instance.isShowingPointAndArea = GUILayout.Toggle(MapSceneView.Instance.isShowingPointAndArea, "显示区域与点");
+        MapSceneView.Instance.isShowingBuilding = GUILayout.Toggle(MapSceneView.Instance.isShowingBuilding, "显示建筑物");
+        MapSceneView.Instance.isShowingEdge = GUILayout.Toggle(MapSceneView.Instance.isShowingEdge, "显示门墙");
+        GUILayout.EndHorizontal();
+        Debug.Log(MapSceneView.Instance.isShowingGrid);
+        //isShowingUnit = GUILayout.Toggle(false,"显示小格");
+      //  Debug.Log(isShowingUnit);
         if (cm == null)
             cm = (CustomMap)target;
         MapModifier.Instance.SetCustomMap(cm);
@@ -158,7 +180,8 @@ public class MapInspector : Editor
         }
         MapSceneView.Instance.CameraTop(cm.center);
         MapModifier.Instance.GenerateBaseData();
-
+        MapModifier.Instance.root = tmp;
+        MapModifier.Instance.CreateObjectsAtFirst();
         SceneMark mark = tmp.GetComponent<SceneMark>();
         if (mark == null)
         {
@@ -184,6 +207,12 @@ public class MapInspector : Editor
                 break;
             case 3:
                 cm.itemlist.Clear();
+                break;
+            case 4:
+                cm.doorlist.Clear();
+                break;
+            case 5:
+                cm.walllist.Clear();
                 break;
             default:
                 break;
